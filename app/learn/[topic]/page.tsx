@@ -1,8 +1,13 @@
 import { siteConfig } from "@/config/site";
 import { notFound } from "next/navigation";
 
-export default function LearnTopicPage({ params }: { params: { topic: string } }) {
-  const channel = siteConfig.channels.find((c) => c.slug === params.topic);
+export default async function LearnTopicPage({
+  params,
+}: {
+  params: Promise<{ topic: string }>;
+}) {
+  const { topic } = await params;
+  const channel = siteConfig.channels.find((c) => c.slug === topic);
   if (!channel) notFound();
 
   return (
