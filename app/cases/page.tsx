@@ -37,7 +37,7 @@ export default function CasesPage() {
           .map((item) => (
           <li key={item.slug}>
             <Link href={`/cases/${item.slug}`} className="flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_28px_rgba(20,26,42,0.12)]">
-              <div className="relative aspect-square bg-[#efeae2]">
+              <div className="relative aspect-[8/5]">
                 <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
               </div>
               <div className="border-t border-black/10 p-3">

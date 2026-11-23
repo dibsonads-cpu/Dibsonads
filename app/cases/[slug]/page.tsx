@@ -35,7 +35,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         <Link href="/cases" className="underline">Case studies</Link>
         <span> / {item.brand}</span>
       </p>
-      <div className="relative mt-4 aspect-square overflow-hidden rounded-3xl border border-black/10 bg-white shadow-sm">
+      <div className="relative mt-4 aspect-[8/5] overflow-hidden rounded-3xl border border-black/10 bg-white shadow-sm">
         <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
       </div>
       <p className="mt-2 text-xs text-ink/60">

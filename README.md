@@ -58,19 +58,19 @@ Use a real photograph that matches the subject.
 
 | Kind | Rule |
 | --- | --- |
-| Official article image | Keep the publisher URL. Set `fit` to `contain` when the image is a wide graphic, so the square card does not crop it. Credit the publisher. |
+| Official article image | Keep the publisher URL. The card frame is 1.6:1. `fit: "cover"` fills it. `fit: "contain"` is for a banner that would be ruined by a crop: the same image is blurred behind it so the frame is never empty. Credit the publisher. |
 | Licensed photo | Unsplash or a Creative Commons photo, downloaded into `public/photos`, with the photographer's name, the licence, and the source page. It has to match the topic (shopping, a phone, a TV, a creator at work). |
 | Last resort | A plain platform logo on a brand-colour field. Do not draw fake people. |
 
-`fit: "cover"` is for a square image whose subject still reads when it fills the frame. `fit: "contain"` pads the rest so a wide source image is not cropped.
+Cards use a landscape 1.6:1 image, full-bleed, with the title underneath.
 
-Every launch and case study must use a different image. `npm test` fails if two items share a file, including the same photo with a different query string. Source-article images stay on the publisher’s URL. When a story has no unique source image, or the only option is a generic photo, use a 1080×1080 infographic from `npm run infographics` (`scripts/make-infographics.mjs` and `lib/infographic-copy.json`). Infographics are type and simple shapes. No people, and no platform logos.
+Every launch and case study must use a different image. `npm test` fails if two items share a file, including the same photo with a different query string, and it checks infographics are 1600×1000. Source-article images stay on the publisher’s URL. When a story has no unique source image, use a 1600×1000 infographic from `npm run infographics` (`scripts/make-infographics.mjs` and `lib/infographic-copy.json`). Infographics use a brand-colour gradient, one stat or keyword, and a simple shape. No people, and no platform logos.
 
 Also required on every launch: `slug`, `title`, `bullets` (2 to 4 sentences from the source), `platform`, `channel` (`social`, `programmatic`, `ai-ads`, `retail-media`, `search`, `ctv-video`), `region` (`global`, `us`, `uk`, `eu`, `apac`, `latam`, `mea`, `north-america`, `multiple`, `not-stated`), optional `countries` as ISO codes the source named, `date`, `sourceName`, and `sourceUrl`. Leave `verified` to `launch()`.
 
 The feed, map, dashboard, sitemap, `/feed.xml`, and `/rss.xml` pick the new object up on the next build. Quick view is `/?item=your-slug`. Swipe mode is `/?view=swipe`. Case studies live at `/cases`.
 
-If you add an official article image, put the source URL and the image URL in `articleImages` inside `lib/media.ts`. Wide graphics should use `fit: "contain"`.
+If you add an official article image, put the source URL and the image URL in `articleImages` inside `lib/media.ts`. A very wide banner that cannot survive a 1.6:1 crop should use `fit: "contain"`.
 
 ## Other content
 

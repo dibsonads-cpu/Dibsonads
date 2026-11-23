@@ -107,7 +107,7 @@ export default function SwipeDeck({ launches, platform }: { launches: Launch[]; 
         <ul className="space-y-3">
           {deck.map((item) => (
             <li key={item.slug} className="flex gap-3 rounded-3xl bg-white p-3 shadow-sm">
-              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
+              <div className="relative aspect-[8/5] w-28 shrink-0 overflow-hidden rounded-2xl">
                 <MediaVisual media={item.image} platform={item.platform} className="h-full w-full" />
               </div>
               <div className="min-w-0">
@@ -142,7 +142,7 @@ export default function SwipeDeck({ launches, platform }: { launches: Launch[]; 
             className="overflow-hidden rounded-[28px] bg-white shadow-xl"
           >
             <button type="button" className="block w-full text-left" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded}>
-              <div className="relative aspect-square max-h-[46vh] bg-navy/5">
+              <div className="relative aspect-[8/5] w-full">
                 <MediaVisual media={current.image} platform={current.platform} className="absolute inset-0" />
               </div>
               <div className="space-y-3 p-5">

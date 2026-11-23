@@ -46,7 +46,7 @@ export default function MediaVisual({
     );
   }
 
-  const pad = tint[platform] ?? "#f4f4f4";
+  const pad = tint[platform] ?? "#141a2a";
 
   if (logo) {
     return (
@@ -57,15 +57,37 @@ export default function MediaVisual({
     );
   }
 
-  const fit = media.fit === "cover" ? "object-cover" : "object-contain";
+  if (media.fit === "contain") {
+    return (
+      <div className={`overflow-hidden ${className}`}>
+        <Image
+          src={src}
+          alt=""
+          fill
+          aria-hidden
+          className="scale-125 object-cover blur-2xl"
+          sizes="(min-width: 1440px) 20vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+          unoptimized
+        />
+        <Image
+          src={src}
+          alt={media.alt}
+          fill
+          className="object-contain"
+          sizes="(min-width: 1440px) 20vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+          unoptimized
+          onError={() => setFailed(true)}
+        />
+      </div>
+    );
+  }
 
   return (
     <Image
       src={src}
       alt={media.alt}
       fill
-      className={fit}
-      style={{ background: pad }}
+      className="object-cover object-center"
       sizes="(min-width: 1440px) 20vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
       unoptimized
       onError={() => setFailed(true)}

@@ -152,10 +152,10 @@ export default function ProductGrid({
             <li key={item.slug} className="min-w-0">
               <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_28px_rgba(20,26,42,0.12)]">
                 <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="flex h-full min-w-0 flex-col text-left">
-                  <div className="relative aspect-square overflow-hidden bg-[#efeae2]">
+                  <div className="relative aspect-[8/5] overflow-hidden">
                     <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
                   </div>
-                  <div className="border-t border-black/10 p-3">
+                  <div className="bg-white p-3">
                     <h2 className="line-clamp-3 text-[15px] font-semibold leading-snug">{item.headline}</h2>
                     <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-ink/50">
                       {item.platform} · {channelLabel(item.channel)}
@@ -181,8 +181,8 @@ export default function ProductGrid({
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="quick-title">
-          <div className="grid max-h-[100dvh] w-full max-w-5xl overflow-y-auto bg-white sm:max-h-[92vh] sm:grid-cols-2">
-            <div className="relative aspect-square bg-[#f3f3f3] sm:aspect-auto sm:min-h-[520px]">
+          <div className="grid max-h-[100dvh] w-full max-w-5xl overflow-y-auto bg-white sm:max-h-[92vh] sm:grid-cols-2 sm:overflow-hidden sm:rounded-2xl">
+            <div className="relative aspect-[8/5] w-full self-start">
               <MediaVisual media={open.image} platform={open.platform} className="absolute inset-0" />
               <button type="button" onClick={() => step(-1)} className="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xl shadow" aria-label="Previous launch">
                 ‹
