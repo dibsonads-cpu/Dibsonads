@@ -1,0 +1,36 @@
+/** ISO 3166-1 numeric ids used by the Natural Earth 110m atlas, for countries people are likely to tap. */
+export const numericToAlpha2: Record<string, string> = {
+  "036": "AU",
+  "076": "BR",
+  "124": "CA",
+  "156": "CN",
+  "250": "FR",
+  "276": "DE",
+  "356": "IN",
+  "380": "IT",
+  "392": "JP",
+  "484": "MX",
+  "528": "NL",
+  "724": "ES",
+  "752": "SE",
+  "826": "GB",
+  "840": "US",
+};
+
+export const countryNames: Record<string, string> = {
+  AU: "Australia",
+  BR: "Brazil",
+  CA: "Canada",
+  CN: "China",
+  FR: "France",
+  DE: "Germany",
+  IN: "India",
+  IT: "Italy",
+  JP: "Japan",
+  MX: "Mexico",
+  NL: "Netherlands",
+  ES: "Spain",
+  SE: "Sweden",
+  GB: "United Kingdom",
+  US: "United States",
+};

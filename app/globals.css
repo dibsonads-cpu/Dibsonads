@@ -2,6 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: light;
+}
+
+html,
 body {
-  @apply bg-white text-gray-900;
+  overflow-x: hidden;
+  background-color: #f6f6f6;
+  color: #161616;
+}
+
+::selection {
+  background: #ffd23f;
+  color: #24124d;
+}
+
+.sticker {
+  border: 1px solid rgba(20, 26, 42, 0.08);
+  box-shadow: 0 10px 30px rgba(20, 26, 42, 0.08);
+}
+
+.sticker:focus-visible,
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible {
+  outline: 3px solid #6d4aff;
+  outline-offset: 3px;
+}
+
+.chip {
+  border: 2px solid #24124d;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.chip:hover {
+  transform: translateY(-2px) rotate(-1deg);
+}
+
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed #24124d;
+  border-radius: 999px;
+  transform: rotate(-8deg);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+details.faq > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+details.faq > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.faq[open] summary .faq-plus {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
+  .sticker,
+  .chip {
+    transition: none;
+  }
 }
