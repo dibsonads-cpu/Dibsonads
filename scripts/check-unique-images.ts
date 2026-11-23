@@ -29,8 +29,8 @@ for (const item of items) {
     if (!existsSync(file)) problems.push(`${item.id} is missing the file ${item.src}`);
     if (item.src.endsWith(".svg")) {
       const svg = readFileSync(file, "utf8");
-      if (!svg.includes('width="1080"') || !svg.includes('height="1080"')) {
-        problems.push(`${item.id} infographic is not 1080x1080`);
+      if (!svg.includes('width="1600"') || !svg.includes('height="1000"')) {
+        problems.push(`${item.id} infographic is not 1600x1000 (1.6:1)`);
       }
     }
   }

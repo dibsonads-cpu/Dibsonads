@@ -182,7 +182,7 @@ export function mediaFor(
       credit: sourceName,
       sourceUrl,
       licence: ARTICLE_TERMS,
-      fit: "contain",
+      fit: src.includes("844x315") ? "contain" : "cover",
       kind: "source",
     };
   }

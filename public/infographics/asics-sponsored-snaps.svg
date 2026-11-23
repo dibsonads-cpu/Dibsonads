@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-label="2 million people">
-  <rect width="1080" height="1080" fill="#f4f0e6"/>
-  <rect x="0" y="0" width="18" height="1080" fill="#d7263d"/>
-  <path d="M800 250 L940 130 L940 250 Z" fill="#d7263d"/>
-  <text x="80" y="150" fill="#d7263d" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="3">ASICS</text>
-  <text x="80" y="430" fill="#141a2a" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="92" font-weight="800">2 million</text>
-<text x="80" y="534" fill="#141a2a" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="92" font-weight="800">people</text>
-  <text x="80" y="960" fill="#6d4aff" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">Reached in Chat</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-label="ASICS 2M">
+  <defs>
+    <radialGradient id="g26" cx="82%" cy="42%" r="78%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="58%" stop-color="#00143f"/>
+      <stop offset="100%" stop-color="#00143f"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="#00143f"/>
+  <rect width="1600" height="1000" fill="url(#g26)"/>
+  <circle cx="1460" cy="-80" r="460" fill="#ffffff" opacity="0.1"/>
+  <circle cx="80" cy="1080" r="360" fill="#000000" opacity="0.16"/>
+  <circle cx="1340" cy="500" r="230" fill="none" stroke="#ffffff" stroke-width="26"/>
+      <circle cx="1340" cy="500" r="64" fill="#ffffff"/>
+  <text x="72" y="118" fill="#ffffff" fill-opacity="0.82" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" letter-spacing="4">ASICS</text>
+  <text x="72" y="560" fill="#ffffff" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="188" font-weight="800">2M</text>
 </svg>
