@@ -1,12 +1,7 @@
+import { mediaFor, type LaunchMedia } from "@/lib/media";
 import { channelLabel, regionLabel, type FeedChannelId, type FeedRegionId } from "@/lib/taxonomy";
 
-export type LaunchImage = {
-  src: string;
-  alt: string;
-  credit: string;
-  licence: string;
-  sourceUrl?: string;
-};
+export type LaunchImage = LaunchMedia;
 
 export type Coverage = "global" | "countries" | "region" | "multi" | "unknown";
 
@@ -29,15 +24,6 @@ export type Launch = {
   image: LaunchImage;
   verified: true;
 };
-
-function cover(slug: string, title: string): LaunchImage {
-  return {
-    src: `/covers/${slug}.svg`,
-    alt: `Original typographic cover for “${title}”`,
-    credit: "Dibs On Ads",
-    licence: "Original. Generated cover art, not a platform logo or a press photo.",
-  };
-}
 
 function inferCountries(region: FeedRegionId, explicit?: string[]) {
   if (explicit) return explicit;
@@ -70,7 +56,9 @@ function launch(
     countries,
     coverage: entry.coverage ?? inferCoverage(entry.region, countries),
     verified: true,
-    image: entry.image ?? cover(entry.slug, entry.title),
+    image:
+      entry.image ??
+      mediaFor(entry.platform, entry.title, entry.sourceUrl, entry.sourceName),
   };
 }
 
@@ -630,79 +618,6 @@ export const updates: Launch[] = [
     sourceUrl: "https://blog.google/products/marketingplatform/360/google-newfront-rethink-ctv-beyond-streaming-with-display-video-360/",
   }),
 ];
-
-function photo(file: string, alt: string, credit: string, licence: string, sourceUrl: string): LaunchImage {
-  return { src: `/photos/${file}`, alt, credit, licence, sourceUrl };
-}
-
-const photos: Record<string, LaunchImage> = {
-  phone: photo(
-    "phone.jpg",
-    "A person holding a smartphone outdoors",
-    "Jonatan Svensson Glad",
-    "CC BY-SA 4.0",
-    "https://commons.wikimedia.org/wiki/File:Girl_Holding_a_Smartphone.jpg",
-  ),
-  tv: photo(
-    "tv.jpg",
-    "A flat-screen television in a room",
-    "Evan Prodromou",
-    "CC BY-SA 4.0",
-    "https://commons.wikimedia.org/wiki/File:A_flat-screen_television.jpg",
-  ),
-  city: photo(
-    "city.jpg",
-    "New York City at night",
-    "Paulo Barcellos Jr.",
-    "CC BY-SA 2.0",
-    "https://commons.wikimedia.org/wiki/File:New_York_City_at_night_HDR.jpg",
-  ),
-  shoppers: photo(
-    "shoppers.jpg",
-    "Shoppers inside a supermarket",
-    "Jason Zhang",
-    "CC BY-SA 3.0",
-    "https://commons.wikimedia.org/wiki/File:Kai_Wei_Supermarket_shoppers,_December_2018.jpg",
-  ),
-  laptop: photo(
-    "laptop.jpg",
-    "A person working on a laptop at a desk",
-    "Robert Durec",
-    "CC BY 4.0",
-    "https://commons.wikimedia.org/wiki/File:Robert_Durec_portrait_working_on_laptop_in_studio.jpg",
-  ),
-};
-
-const photoForSlug: Record<string, LaunchImage> = {
-  "meta-threads-ads-all-markets": photos.phone,
-  "tiktok-newfronts-high-impact-formats": photos.phone,
-  "pinterest-visual-search-ads": photos.phone,
-  "meta-newfronts-reels-trending": photos.phone,
-  "reddit-max-campaigns-beta": photos.phone,
-  "tiktok-europe-streaming-ads": photos.phone,
-  "meta-product-showcase-default": photos.phone,
-  "youtube-vrc-non-skip": photos.tv,
-  "youtube-brandcast-2026": photos.tv,
-  "youtube-demand-gen-may-2026": photos.tv,
-  "amazon-uk-geographic-insights": photos.tv,
-  "dv360-vertical-video": photos.city,
-  "dv360-newfront-2025": photos.city,
-  "dv360-spotify-audiences": photos.city,
-  "dv360-pinterest-inventory": photos.city,
-  "amazon-sponsored-products-video": photos.shoppers,
-  "pinterest-where-to-buy": photos.shoppers,
-  "amazon-ads-prompts": photos.shoppers,
-  "dv360-loblaw-canada": photos.shoppers,
-  "google-ai-max-for-search": photos.laptop,
-  "google-ai-max-for-shopping": photos.laptop,
-  "microsoft-bing-ai-overview-ads": photos.laptop,
-  "google-lsa-home-listings": photos.laptop,
-};
-
-for (const update of updates) {
-  const assigned = photoForSlug[update.slug];
-  if (assigned) update.image = assigned;
-}
 
 export type LaunchUpdate = Launch;
 

@@ -1,4 +1,4 @@
-import SwipeDeck from "@/components/feed/SwipeDeck";
+import ProductGrid from "@/components/feed/ProductGrid";
 import JsonLd from "@/components/JsonLd";
 import { siteConfig } from "@/config/site";
 import { launchDek, updatesByDate } from "@/lib/updates";
@@ -8,16 +8,21 @@ export const metadata = buildMetadata({
   title: "Dibs On Ads — Know first",
   description: siteConfig.description,
   path: "/",
-  kicker: "Launch feed",
+  kicker: "New launches",
   absolute: true,
 });
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ platform?: string }>;
-}) {
-  const { platform } = await searchParams;
+type Search = {
+  channel?: string;
+  platform?: string;
+  range?: string;
+  region?: string;
+  view?: string;
+  item?: string;
+};
+
+export default async function HomePage({ searchParams }: { searchParams: Promise<Search> }) {
+  const params = await searchParams;
   const launches = updatesByDate();
   const jsonLd = {
     "@context": "https://schema.org",
@@ -36,7 +41,17 @@ export default async function HomePage({
   return (
     <main>
       <JsonLd data={jsonLd} />
-      <SwipeDeck launches={launches} platform={platform} />
+      <ProductGrid
+        launches={launches}
+        initial={{
+          channel: params.channel ?? "",
+          platform: params.platform ?? "",
+          range: params.range ?? "",
+          region: params.region ?? "",
+          view: params.view ?? "",
+          item: params.item ?? "",
+        }}
+      />
     </main>
   );
 }

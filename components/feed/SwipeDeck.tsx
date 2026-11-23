@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import MediaVisual from "@/components/feed/MediaVisual";
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { coverageFlag } from "@/lib/flags";
@@ -108,7 +108,7 @@ export default function SwipeDeck({ launches, platform }: { launches: Launch[]; 
           {deck.map((item) => (
             <li key={item.slug} className="flex gap-3 rounded-3xl bg-white p-3 shadow-sm">
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
-                <Image src={item.image.src} alt="" fill className="object-cover" sizes="80px" unoptimized={item.image.src.endsWith(".svg")} />
+                <MediaVisual media={item.image} platform={item.platform} className="h-full w-full" />
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-semibold text-ink/60">{item.platform} · {formatLaunchDate(item)}</p>
@@ -143,15 +143,7 @@ export default function SwipeDeck({ launches, platform }: { launches: Launch[]; 
           >
             <button type="button" className="block w-full text-left" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded}>
               <div className="relative aspect-[16/10] max-h-[42vh] bg-navy/5">
-                <Image
-                  src={current.image.src}
-                  alt={current.image.alt}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(min-width: 768px) 560px, 100vw"
-                  unoptimized={current.image.src.endsWith(".svg")}
-                />
+                <MediaVisual media={current.image} platform={current.platform} className="absolute inset-0" />
                 <p className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-sm font-bold">
                   {coverageFlag(current.coverage, current.countries, current.region)} {regionLabel(current.region)}
                 </p>

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import MediaVisual from "@/components/feed/MediaVisual";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/JsonLd";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -45,7 +45,7 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
     dateModified: update.date,
     mainEntityOfPage: url,
     url,
-    image: absoluteUrl(update.image.src),
+    image: update.image.type === "logo" ? absoluteUrl(update.image.src) : update.image.src,
     author: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
     publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
     citation: update.sourceUrl,
@@ -59,10 +59,13 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
         <Link href="/" className="underline">Desk</Link>
         <span> / {update.platform}</span>
       </p>
-      <div className="relative mt-4 aspect-[16/9] overflow-hidden rounded-[28px] border-[3px] border-ink">
-        <Image src={update.image.src} alt={update.image.alt} fill sizes="(min-width: 768px) 720px, 100vw" className="object-cover" unoptimized />
+      <div className="relative mt-4 aspect-[16/9] overflow-hidden rounded-3xl bg-white">
+        <MediaVisual media={update.image} platform={update.platform} className="absolute inset-0" />
       </div>
-      <p className="mt-2 text-[11px] text-ink/55">Image: {update.image.credit}. {update.image.licence}</p>
+      <p className="mt-2 text-xs text-ink/60">
+        {update.image.credit}. {update.image.licence}{" "}
+        <a className="underline" href={update.image.sourceUrl}>Image source</a>
+      </p>
       <div className="mt-4 flex flex-wrap gap-2 text-xs font-extrabold uppercase">
         <span className="rounded-full bg-coral px-2 py-1 text-white">{channelLabel(update.channel)}</span>
         <span className="rounded-full bg-sun px-2 py-1">{regionLabel(update.region)}</span>

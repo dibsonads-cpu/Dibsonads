@@ -46,9 +46,21 @@ Required fields:
 | `image` | Optional. If you omit it, a generated cover is used. For a real photo, put the file in `public/photos` and set `src`, `alt`, `credit`, `licence`, and `sourceUrl`. Only use a photo whose licence allows this site (Unsplash, Pexels, CC, or a press kit that allows editorial use). |
 | `verified` | Leave this to the `launch()` helper. It is always `true`. Do not add a launch you have not opened. |
 
-The feed, dashboard, map, sitemap, `/feed.xml`, and `/rss.xml` pick the new object up on the next build. A platform shortcut is `/dashboard?platform=TikTok`.
+The feed, dashboard, map, sitemap, `/feed.xml`, and `/rss.xml` pick the new object up on the next build. A platform shortcut is `/dashboard?platform=TikTok`. The homepage grid opens a quick view at `/?item=your-slug`. Swipe mode is `/?view=swipe`.
 
-Covers are original SVG art in `public/covers`, made with `node scripts/generate-covers.mjs`. Do not paste a platform logo. A licensed photo is stored in the repo, not hotlinked.
+## Images and video
+
+Do not generate cover art and do not use a stock photo that is unrelated to the launch.
+
+Each launch gets a `image` object from `lib/media.ts`:
+
+| `type` | When |
+| --- | --- |
+| `image` | The hero from the official article. Leave it on the publisher’s URL. Set `credit` to the publisher, `sourceUrl` to the article, and `licence` to the article-image note in `lib/media.ts`. |
+| `video` | An official YouTube or Vimeo embed URL from that platform’s own channel. `src` is the embed URL. Credit the channel. |
+| `logo` | No official image. The card shows the platform’s official logo, unmodified, on a plain background, with the platform name. Logos in `public/logos` are for identification only. They are trademarks. Do not redraw, recolour, or imply a partnership. |
+
+If you add a new article image, put the source URL and the image URL in `articleImages` inside `lib/media.ts`.
 
 ## Other content
 
