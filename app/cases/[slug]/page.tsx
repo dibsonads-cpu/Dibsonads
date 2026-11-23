@@ -42,20 +42,31 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         {item.image.credit}. {item.image.licence}{" "}
         <a className="underline" href={item.image.sourceUrl}>Image source</a>
       </p>
-      <h1 className="mt-4 font-display text-4xl font-bold leading-tight">{item.brand}</h1>
-      <p className="mt-2 text-lg font-semibold">{item.title}</p>
-      <p className="mt-2 text-sm font-semibold text-ink/70">{item.platform} · {item.markets.join(" · ")}</p>
-      <section className="mt-6">
-        <h2 className="text-xs font-bold uppercase tracking-wide text-ink/50">What they did</h2>
-        <p className="mt-1 text-sm leading-6">{item.whatTheyDid}</p>
-      </section>
-      <section className="mt-4">
-        <h2 className="text-xs font-bold uppercase tracking-wide text-ink/50">Results the source published</h2>
-        <p className="mt-1 text-sm leading-6">{item.results}</p>
-      </section>
-      <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex min-h-12 items-center rounded-full bg-navy px-5 text-sm font-semibold text-white">
-        {item.sourceName}
-      </a>
+      <article className="mt-4 rounded-3xl p-5 text-navy sm:p-7" style={{ background: item.tint }}>
+        <h1 className="font-display text-4xl font-bold leading-tight">{item.title}</h1>
+        <section className="mt-6">
+          <h2 className="text-xs font-bold uppercase tracking-wide text-navy/60">Client</h2>
+          <p className="mt-1 text-sm leading-6">{item.brand}</p>
+        </section>
+        <section className="mt-4">
+          <h2 className="text-xs font-bold uppercase tracking-wide text-navy/60">What they used</h2>
+          <p className="mt-1 text-sm leading-6">{item.used}</p>
+        </section>
+        <section className="mt-4">
+          <h2 className="text-xs font-bold uppercase tracking-wide text-navy/60">Performance</h2>
+          <p className="mt-1 text-sm leading-6">{item.results}</p>
+          <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center font-semibold underline">
+            {item.sourceName}
+          </a>
+        </section>
+        <section className="mt-4">
+          <h2 className="text-xs font-bold uppercase tracking-wide text-navy/60">
+            Why it worked
+            {item.whyInferred ? <span className="ml-2 normal-case tracking-normal text-violet">Suggestion</span> : null}
+          </h2>
+          <p className="mt-1 text-sm leading-6">{item.why}</p>
+        </section>
+      </article>
       {related.length > 0 ? (
         <section className="mt-8">
           <h2 className="font-display text-2xl font-bold">Related launches</h2>

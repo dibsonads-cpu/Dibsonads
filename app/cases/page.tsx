@@ -36,13 +36,13 @@ export default function CasesPage() {
           .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.brand.localeCompare(b.brand)))
           .map((item) => (
           <li key={item.slug}>
-            <Link href={`/cases/${item.slug}`} className="flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_28px_rgba(20,26,42,0.12)]">
-              <div className="relative aspect-[8/5]">
+            <Link href={`/cases/${item.slug}`} className="flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 shadow-[0_10px_28px_rgba(20,26,42,0.12)]" style={{ background: item.tint }}>
+              <div className="relative aspect-[8/5] bg-white">
                 <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
               </div>
-              <div className="border-t border-black/10 p-3">
-                <h2 className="line-clamp-3 text-[15px] font-semibold leading-snug">{item.brand}</h2>
-                <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-ink/50">{item.platform}</p>
+              <div className="p-3 text-navy">
+                <h2 className="line-clamp-3 text-[15px] font-semibold leading-snug">{item.title}</h2>
+                <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-navy/70">{item.brand} · {item.platform}</p>
               </div>
             </Link>
           </li>

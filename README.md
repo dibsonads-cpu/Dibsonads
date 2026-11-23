@@ -43,14 +43,18 @@ One object in `lib/cases.ts`.
 
 | Field | What to put |
 | --- | --- |
-| `brand` | The advertiser, spelled as the source spells it. |
+| `brand` | The client, spelled as the source spells it. |
+| `title` | The hook. Say what was achieved, such as `+237% clicks in two weeks`. Use a figure the source published. |
+| `tint` | A light background colour for this card, distinct from the others, dark text still readable. |
+| `used` | Platform, product, and format, from the source. |
+| `results` | Only figures the source published. If there is no number, say so. |
+| `why` | One or two plain lines. |
+| `whyInferred` | `true` when the source does not say why it worked. The page labels that section Suggestion. |
 | `platform` | The ad platform. |
-| `launchSlugs` | Related launches, so the case links from those pages. Use `[]` if none fit. |
-| `whatTheyDid` | What the brand did, from the source. |
-| `results` | Only figures the source published. If there is no number, say the source did not publish one. |
+| `launchSlugs` | Related launches. Use `[]` if none fit. |
 | `markets` | Where the case ran, or "Not stated". |
 | `sourceUrl` | The case-study page, not the homepage. |
-| `image` | A real photo that matches the story, with photographer credit, or the source article image. No generated people. |
+| `image` | A unique image. No generated people. |
 
 ## Images
 
