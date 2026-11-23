@@ -5,7 +5,27 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        ink: "#24124d",
+        paper: "#fff4ea",
+        coral: "#ff5d3a",
+        magenta: "#ff2f8b",
+        violet: "#6d4aff",
+        sun: "#ffd23f",
+        mint: "#14d6a0",
+        sky: "#3ec4ff",
+        grape: "#2a1458",
+      },
+      fontFamily: {
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
+      },
+      boxShadow: {
+        sticker: "4px 4px 0 #24124d",
+        "sticker-lg": "8px 8px 0 #24124d",
+      },
+    },
   },
   plugins: [],
 };

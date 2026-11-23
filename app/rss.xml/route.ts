@@ -1,16 +1,17 @@
-import { updates } from "@/lib/data";
 import { siteConfig } from "@/config/site";
+import { updatesByDate } from "@/lib/updates";
 
 export async function GET() {
-  const items = updates
+  const items = updatesByDate()
     .map(
-      (u) => `
+      (update) => `
     <item>
-      <title><![CDATA[${u.title}]]></title>
-      <link>${siteConfig.domain}/updates/${u.slug}</link>
-      <guid>${siteConfig.domain}/updates/${u.slug}</guid>
-      <description><![CDATA[${u.bullets.join(" ")}]]></description>
-    </item>`
+      <title><![CDATA[${update.title}]]></title>
+      <link>${siteConfig.url}/updates/${update.slug}</link>
+      <guid>${siteConfig.url}/updates/${update.slug}</guid>
+      <pubDate>${new Date(`${update.date}T00:00:00Z`).toUTCString()}</pubDate>
+      <description><![CDATA[${update.summary}]]></description>
+    </item>`,
     )
     .join("");
 
@@ -18,13 +19,16 @@ export async function GET() {
 <rss version="2.0">
   <channel>
     <title>${siteConfig.name}</title>
-    <link>${siteConfig.domain}</link>
+    <link>${siteConfig.url}</link>
     <description>${siteConfig.description}</description>
     ${items}
   </channel>
 </rss>`;
 
   return new Response(xml, {
-    headers: { "Content-Type": "application/rss+xml; charset=utf-8" },
+    headers: {
+      "Content-Type": "application/rss+xml; charset=utf-8",
+      "Cache-Control": "public, max-age=3600",
+    },
   });
 }

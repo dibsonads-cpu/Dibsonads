@@ -1,9 +1,13 @@
+const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dibsonads.com";
+
 export const siteConfig = {
   name: "Dibs On Ads",
-  shortName: "DOAds",
+  shortName: "Dibs",
   tagline: "Verified paid media launches. First dibs on new formats.",
-  domain: "https://dibsonads.com",
-  description: "Fast, scannable B2B advertising intelligence tracking verified paid media launches across channels and countries. First access to official updates.",
+  description:
+    "Verified paid media launches, practical channel guides, and an ad platform directory. Official sources only — unknowns stay labeled unknown.",
+  url: rawSiteUrl.replace(/\/$/, ""),
+  contactEmail: "TODO",
   social: {
     linkedin: "https://www.linkedin.com/company/dibs-on-ads",
     substack: "https://dibsonads.substack.com",
@@ -13,17 +17,64 @@ export const siteConfig = {
     tiktok: "https://www.tiktok.com/@dibs.on.ads",
   },
   newsletter: {
-    type: "substack" as "substack" | "api",
-    url: "https://dibsonads.substack.com",
-    apiEndpoint: "/api/newsletter",
+    subscribeUrl: "https://dibsonads.substack.com/subscribe",
+    formAction: "https://dibsonads.substack.com/api/v1/free?nojs=true",
   },
-  channels: [
-    { slug: "paid-social", name: "Paid Social", channel: "Paid Social" as const },
-    { slug: "search-ai", name: "Search & AI", channel: "Search & AI" as const },
-    { slug: "programmatic-dsp", name: "Programmatic & DSP", channel: "Programmatic & DSP" as const },
-    { slug: "retail-media", name: "Retail Media", channel: "Retail Media" as const },
-    { slug: "publisher-ad-tech", name: "Publisher & Ad Tech", channel: "Publisher & Ad Tech" as const },
-    { slug: "ctv-audio", name: "CTV & Audio", channel: "CTV & Audio" as const },
-    { slug: "offline", name: "Offline (TV / OOH / Radio / Print)", channel: "Offline" as const },
-  ],
+  rssPath: "/rss.xml",
 };
+
+export type Channel = {
+  slug: string;
+  name: string;
+  blurb: string;
+  accent: "coral" | "violet" | "mint" | "sun" | "sky" | "magenta" | "grape";
+};
+
+export const channels: Channel[] = [
+  {
+    slug: "paid-social",
+    name: "Paid Social",
+    blurb: "Meta, TikTok, Snap, Pinterest, LinkedIn, Reddit, and the other social auctions.",
+    accent: "coral",
+  },
+  {
+    slug: "search-ai",
+    name: "Search & AI",
+    blurb: "Google, Microsoft Advertising, and ads that sit next to AI answers.",
+    accent: "violet",
+  },
+  {
+    slug: "retail-media",
+    name: "Retail Media",
+    blurb: "Sponsored placements on retailer sites and apps, starting with Amazon.",
+    accent: "sun",
+  },
+  {
+    slug: "programmatic-dsp",
+    name: "Programmatic & DSP",
+    blurb: "Display, video, CTV, and audio bought through a demand-side platform.",
+    accent: "sky",
+  },
+  {
+    slug: "ctv-audio",
+    name: "CTV & Audio",
+    blurb: "Streaming TV and audio bought directly or through a DSP.",
+    accent: "magenta",
+  },
+  {
+    slug: "publisher-ad-tech",
+    name: "Publisher & Ad Tech",
+    blurb: "Publisher-direct deals and the tools around them.",
+    accent: "mint",
+  },
+  {
+    slug: "offline",
+    name: "Offline",
+    blurb: "Linear TV, out-of-home, radio, and print.",
+    accent: "grape",
+  },
+];
+
+export function getChannel(slug: string) {
+  return channels.find((channel) => channel.slug === slug);
+}
