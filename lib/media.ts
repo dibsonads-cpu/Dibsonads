@@ -7,6 +7,7 @@ export type LaunchMedia = {
   licence: string;
   /** cover fills the square. contain keeps the whole frame and pads the rest. */
   fit?: "cover" | "contain";
+  kind?: "source" | "licensed" | "infographic";
 };
 
 export const PHOTO_LICENCE = "Unsplash Licence. Real photograph, not generated. Downloaded into this repository.";
@@ -154,7 +155,7 @@ const topicPhotos = {
 
 export function topicPhoto(kind: keyof typeof topicPhotos, alt: string): LaunchMedia {
   const photo = topicPhotos[kind];
-  return { type: "image", alt, fit: "cover", ...photo };
+  return { type: "image", alt, fit: "cover", kind: "licensed", ...photo };
 }
 
 function topicFor(platform: string, channel?: string): keyof typeof topicPhotos {
@@ -182,6 +183,7 @@ export function mediaFor(
       sourceUrl,
       licence: ARTICLE_TERMS,
       fit: "contain",
+      kind: "source",
     };
   }
   return topicPhoto(topicFor(platform, channel), title);

@@ -1,6 +1,7 @@
 import { buildExtra } from "@/lib/extra-launches";
 import { headlines, marketOverrides } from "@/lib/headlines";
 import { fallbackExplainer, type Explainer } from "@/lib/explain";
+import { infographicFor } from "@/lib/infographics";
 import { defaultMarkets } from "@/lib/markets";
 import { mediaFor, type LaunchMedia } from "@/lib/media";
 import { channelLabel, regionLabel, type FeedChannelId, type FeedRegionId } from "@/lib/taxonomy";
@@ -63,7 +64,10 @@ export function launch(
   const coverage = entry.coverage ?? inferCoverage(entry.region, countries);
   const headline = entry.headline ?? entry.title;
   const markets = entry.markets?.length ? entry.markets : defaultMarkets({ region: entry.region, countries, regionNote: entry.regionNote, coverage });
-  const image = entry.image ?? mediaFor(entry.platform, entry.title, entry.sourceUrl, entry.sourceName, entry.channel);
+  const image =
+    infographicFor(entry.slug, headline) ??
+    entry.image ??
+    mediaFor(entry.platform, entry.title, entry.sourceUrl, entry.sourceName, entry.channel);
   return {
     ...entry,
     id: entry.slug,

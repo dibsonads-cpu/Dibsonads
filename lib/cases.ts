@@ -1,4 +1,5 @@
-import { topicPhoto, type LaunchMedia } from "@/lib/media";
+import { infographicFor } from "@/lib/infographics";
+import type { LaunchMedia } from "@/lib/media";
 
 export type CaseStudy = {
   slug: string;
@@ -28,7 +29,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://advertising.amazon.com/library/case-studies/booking-com-prime-video-campaigns",
     date: "2024-10-01",
     markets: ["Not listed country by country. The case study describes a 2024 Prime Video campaign."],
-    image: topicPhoto("tv", "A television in a living room"),
+    image: infographicFor("booking-prime-video", "Booking.com reached 22.3 million viewers")!,
   },
   {
     slug: "fizz-fallout",
@@ -42,7 +43,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://advertising.amazon.com/en-us/library/case-studies/how-fizz-mobile-used-prime-video-to-reach-gamers/",
     date: "2024-05-17",
     markets: ["Canada"],
-    image: topicPhoto("tv", "A flat-screen television"),
+    image: infographicFor("fizz-fallout", "Fizz awareness rose 21 percent")!,
   },
   {
     slug: "jeep-women-era",
@@ -56,7 +57,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://advertising.amazon.com/library/case-studies/jeep-women-era-prime-video-ads",
     date: "2024-12-31",
     markets: ["Italy"],
-    image: topicPhoto("tv", "Television in a home"),
+    image: infographicFor("jeep-women-era", "Jeep ran 96.3 million impressions")!,
   },
   {
     slug: "kerastase-premiere",
@@ -70,7 +71,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://advertising.amazon.com/en-us/library/case-studies/kerastase-prime-video-ads/",
     date: "2024-10-27",
     markets: ["Italy"],
-    image: topicPhoto("shop", "A shop aisle"),
+    image: infographicFor("kerastase-premiere", "Kérastase reached 13.3 million people")!,
   },
   {
     slug: "wendys-sponsored-snaps",
@@ -84,7 +85,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://newsroom.snap.com/say-it-in-a-snap-newfronts-2025",
     date: "2025-05-07",
     markets: ["Not stated in the NewFronts post"],
-    image: topicPhoto("phone", "A smartphone in a hand"),
+    image: infographicFor("wendys-sponsored-snaps", "Wendy's ran 52 million impressions in a day")!,
   },
   {
     slug: "asics-sponsored-snaps",
@@ -98,7 +99,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://forbusiness.snapchat.com/blog/snapchat-2025-performance-advertising",
     date: "2025-12-09",
     markets: ["Not stated"],
-    image: topicPhoto("creator", "Someone filming on a phone"),
+    image: infographicFor("asics-sponsored-snaps", "ASICS reached 2 million people")!,
   },
   {
     slug: "prime-video-pinterest-invincible",
@@ -112,7 +113,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://business.pinterest.com/pt-br/success-stories/prime-video/",
     date: "2024-01-01",
     markets: ["Told as a Pinterest Business story for Brazil. A second country is not named."],
-    image: topicPhoto("phone", "A phone in someone's hand"),
+    image: infographicFor("prime-video-pinterest-invincible", "Prime Video delivered four times the clicks")!,
   },
   {
     slug: "wayfair-top-of-search",
@@ -126,7 +127,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://newsroom.pinterest.com/en-au/news/pinterest-introduces-top-of-search-ads-and-new-advertising-tools/",
     date: "2025-09-25",
     markets: ["Beta across monetised markets. Wayfair's test country is not named."],
-    image: topicPhoto("grocery", "Products on shop shelves"),
+    image: infographicFor("wayfair-top-of-search", "Wayfair click rate rose 237 percent")!,
   },
   {
     slug: "canadian-tire-local-inventory",
@@ -140,7 +141,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://newsroom.pinterest.com/en-au/news/pinterest-introduces-top-of-search-ads-and-new-advertising-tools/",
     date: "2025-09-25",
     markets: ["Canada"],
-    image: topicPhoto("shop", "A supermarket aisle"),
+    image: infographicFor("canadian-tire-local-inventory", "Canadian Tire store visits rose 16.5 percent")!,
   },
   {
     slug: "lenovo-reddit-dpa",
@@ -154,7 +155,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://www.business.reddit.com/blog/dynamic-product-ads-launch",
     date: "2025-05-22",
     markets: ["North America is in the spokesperson's title. Reddit does not list further countries."],
-    image: topicPhoto("laptop", "A laptop on a desk"),
+    image: infographicFor("lenovo-reddit-dpa", "Lenovo purchases rose 7 percent")!,
   },
   {
     slug: "vistaprint-reddit-dpa",
@@ -168,7 +169,7 @@ export const caseStudies: CaseStudy[] = [
     sourceUrl: "https://www.business.reddit.com/blog/dynamic-product-ads-launch",
     date: "2025-05-22",
     markets: ["Not stated"],
-    image: topicPhoto("laptop", "Laptop and books on a desk"),
+    image: infographicFor("vistaprint-reddit-dpa", "VistaPrint saw a 4 times return")!,
   },
 ];
 
