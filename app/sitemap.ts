@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
+import { caseStudies } from "@/lib/cases";
 import { guides } from "@/lib/learn";
 import { platforms } from "@/lib/platforms";
 import { updates } from "@/lib/updates";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPaths = ["", "/map", "/dashboard", "/platforms", "/learn", "/saved", "/updates", "/advertise"];
+  const staticPaths = ["", "/map", "/dashboard", "/cases", "/platforms", "/learn", "/saved", "/updates", "/advertise"];
   const staticEntries: MetadataRoute.Sitemap = staticPaths.map((path) => ({
     url: `${siteConfig.url}${path || "/"}`.replace(/\/$/, "") || siteConfig.url,
     changeFrequency: path === "" || path === "/updates" ? "weekly" : "monthly",
@@ -33,5 +34,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...updateEntries, ...guideEntries, ...platformEntries];
+  const caseEntries: MetadataRoute.Sitemap = caseStudies.map((item) => ({
+    url: `${siteConfig.url}/cases/${item.slug}`,
+    lastModified: item.date,
+    changeFrequency: "yearly",
+    priority: 0.6,
+  }));
+
+  return [...staticEntries, ...updateEntries, ...caseEntries, ...guideEntries, ...platformEntries];
 }

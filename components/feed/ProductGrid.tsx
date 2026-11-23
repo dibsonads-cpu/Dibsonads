@@ -5,9 +5,10 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import MediaVisual from "@/components/feed/MediaVisual";
 import SwipeDeck from "@/components/feed/SwipeDeck";
-import { coverageFlag } from "@/lib/flags";
-import { channelLabel, feedChannels, feedRegions, regionLabel } from "@/lib/taxonomy";
-import { formatLaunchDate, launchPlatforms, type Launch } from "@/lib/updates";
+import ExplainerSections from "@/components/launch/ExplainerSections";
+import { marketsLine } from "@/lib/markets";
+import { channelLabel, feedChannels, feedRegions } from "@/lib/taxonomy";
+import { formatLaunchDate, launchPlatforms, launchYears, type Launch } from "@/lib/updates";
 
 const SAVED = "dibsonads-saved";
 
@@ -16,6 +17,8 @@ type Filters = {
   platform: string;
   range: string;
   region: string;
+  month: string;
+  year: string;
   view: string;
   item: string;
 };
@@ -65,6 +68,8 @@ export default function ProductGrid({
         if (filters.channel && item.channel !== filters.channel) return false;
         if (filters.platform && item.platform !== filters.platform) return false;
         if (filters.region && item.region !== filters.region) return false;
+        if (filters.year && item.date.slice(0, 4) !== filters.year) return false;
+        if (filters.month && item.date.slice(5, 7) !== filters.month) return false;
         if (!inRange(item.date, filters.range)) return false;
         return true;
       }),
@@ -81,6 +86,8 @@ export default function ProductGrid({
     if (next.platform) params.set("platform", next.platform);
     if (next.range) params.set("range", next.range);
     if (next.region) params.set("region", next.region);
+    if (next.month) params.set("month", next.month);
+    if (next.year) params.set("year", next.year);
     if (next.view === "swipe") params.set("view", "swipe");
     if (next.item) params.set("item", next.item);
     const query = params.toString();
@@ -133,36 +140,39 @@ export default function ProductGrid({
         <Select label="Platform" value={filters.platform} onChange={(platform) => write({ ...filters, platform, item: "" })} options={[["", "All platforms"], ...platforms.map((item) => [item, item] as [string, string])]} />
         <Select label="Time" value={filters.range} onChange={(range) => write({ ...filters, range, item: "" })} options={[["", "Any time"], ["10", "Last 10 days"], ["30", "Last 30 days"], ["year", "This year"]]} />
         <Select label="Region" value={filters.region} onChange={(region) => write({ ...filters, region, item: "" })} options={[["", "All regions"], ...feedRegions.map((item) => [item.id, item.label] as [string, string])]} />
+        <Select label="Month" value={filters.month} onChange={(month) => write({ ...filters, month, item: "" })} options={[["", "Any month"], ...Array.from({ length: 12 }, (_, index) => [String(index + 1).padStart(2, "0"), ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][index]] as [string, string])]} />
+        <Select label="Year" value={filters.year} onChange={(year) => write({ ...filters, year, item: "" })} options={[["", "Any year"], ...launchYears().map((item) => [item, item] as [string, string])]} />
       </div>
 
       {filters.view === "swipe" ? (
         <SwipeDeck launches={visible} />
       ) : (
-        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-4 min-[1440px]:grid-cols-5">
+        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 min-[1440px]:grid-cols-5">
           {visible.map((item) => (
             <li key={item.slug} className="min-w-0">
-              <article className="group relative flex h-full flex-col bg-white">
-                <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="block min-w-0 text-left">
-                  <div className="relative aspect-[3/4] overflow-hidden bg-[#f3f3f3]">
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_28px_rgba(20,26,42,0.12)]">
+                <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="block w-full text-left">
+                  <div className="relative aspect-[8/5] overflow-hidden">
                     <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
                   </div>
-                  <h2 className="mt-3 line-clamp-2 px-1 text-sm font-semibold leading-snug">{item.title}</h2>
-                  <p className="mt-1 px-1 text-xs text-ink/60">
-                    {item.platform} · {channelLabel(item.channel)}
-                  </p>
-                  <p className="mt-0.5 px-1 pb-3 text-xs text-ink/50">
-                    {formatLaunchDate(item)} · {coverageFlag(item.coverage, item.countries, item.region)} {regionLabel(item.region)}
-                  </p>
                 </button>
-                <button
-                  type="button"
-                  aria-label={saved.includes(item.slug) ? "Remove from saved" : "Save"}
-                  aria-pressed={saved.includes(item.slug)}
-                  onClick={() => toggleSave(item.slug)}
-                  className="absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-lg shadow-sm"
-                >
-                  {saved.includes(item.slug) ? "♥" : "♡"}
-                </button>
+                <div className="flex items-start gap-2 bg-white p-3">
+                  <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="min-w-0 flex-1 text-left">
+                    <h2 className="line-clamp-3 text-[15px] font-semibold leading-snug">{item.headline}</h2>
+                    <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-ink/50">
+                      {item.platform} · {channelLabel(item.channel)}
+                    </p>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={saved.includes(item.slug) ? "Remove from saved" : "Save"}
+                    aria-pressed={saved.includes(item.slug)}
+                    onClick={() => toggleSave(item.slug)}
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-lg"
+                  >
+                    {saved.includes(item.slug) ? "♥" : "♡"}
+                  </button>
+                </div>
               </article>
             </li>
           ))}
@@ -173,8 +183,8 @@ export default function ProductGrid({
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="quick-title">
-          <div className="grid max-h-[100dvh] w-full max-w-5xl overflow-y-auto bg-white sm:max-h-[92vh] sm:grid-cols-2">
-            <div className="relative min-h-[240px] bg-[#f3f3f3] sm:min-h-[520px]">
+          <div className="flex max-h-[100dvh] w-full max-w-3xl flex-col overflow-y-auto bg-white sm:max-h-[92vh] sm:rounded-3xl sm:shadow-xl">
+            <div className="relative aspect-[8/5] w-full shrink-0">
               <MediaVisual media={open.image} platform={open.platform} className="absolute inset-0" />
               <button type="button" onClick={() => step(-1)} className="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xl shadow" aria-label="Previous launch">
                 ‹
@@ -186,18 +196,15 @@ export default function ProductGrid({
             <div className="flex flex-col gap-4 p-5 sm:p-8">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-xs font-semibold uppercase tracking-wide text-ink/50">
-                  {open.platform} · {channelLabel(open.channel)} · {formatLaunchDate(open)} · {regionLabel(open.region)}
+                  {open.platform} · {channelLabel(open.channel)} · {formatLaunchDate(open)}
                 </p>
                 <button type="button" onClick={() => write({ ...filters, item: "" })} className="min-h-11 shrink-0 px-2 text-sm font-semibold">
                   Close
                 </button>
               </div>
-              <h2 id="quick-title" className="font-display text-3xl font-bold leading-tight">{open.title}</h2>
-              <ul className="list-disc space-y-2 pl-5 text-sm leading-6">
-                {open.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
+              <h2 id="quick-title" className="font-display text-3xl font-bold leading-tight">{open.headline}</h2>
+              <p className="text-sm font-semibold">Live in {marketsLine(open.markets)}</p>
+              <ExplainerSections explainer={open.explainer} />
               <p className="text-xs leading-5 text-ink/60">
                 {open.image.credit}. {open.image.licence}{" "}
                 <a className="underline" href={open.image.sourceUrl}>Credit link</a>

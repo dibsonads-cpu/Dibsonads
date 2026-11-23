@@ -4,8 +4,8 @@ import Link from "next/link";
 import MediaVisual from "@/components/feed/MediaVisual";
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { coverageFlag } from "@/lib/flags";
-import { channelLabel, regionLabel } from "@/lib/taxonomy";
+import { marketsLine } from "@/lib/markets";
+import { channelLabel } from "@/lib/taxonomy";
 import { formatLaunchDate, type Launch } from "@/lib/updates";
 
 const SAVED = "dibsonads-saved";
@@ -107,7 +107,7 @@ export default function SwipeDeck({ launches, platform }: { launches: Launch[]; 
         <ul className="space-y-3">
           {deck.map((item) => (
             <li key={item.slug} className="flex gap-3 rounded-3xl bg-white p-3 shadow-sm">
-              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
+              <div className="relative aspect-[8/5] w-28 shrink-0 overflow-hidden rounded-2xl">
                 <MediaVisual media={item.image} platform={item.platform} className="h-full w-full" />
               </div>
               <div className="min-w-0">
@@ -142,21 +142,16 @@ export default function SwipeDeck({ launches, platform }: { launches: Launch[]; 
             className="overflow-hidden rounded-[28px] bg-white shadow-xl"
           >
             <button type="button" className="block w-full text-left" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded}>
-              <div className="relative aspect-[16/10] max-h-[42vh] bg-navy/5">
+              <div className="relative aspect-[8/5] w-full">
                 <MediaVisual media={current.image} platform={current.platform} className="absolute inset-0" />
-                <p className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-sm font-bold">
-                  {coverageFlag(current.coverage, current.countries, current.region)} {regionLabel(current.region)}
-                </p>
               </div>
               <div className="space-y-3 p-5">
                 <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-wide">
                   <span className="rounded-full bg-coral px-2 py-1 text-white">{channelLabel(current.channel)}</span>
                   <span className="rounded-full bg-paper px-2 py-1">{current.platform}</span>
                 </div>
-                <p className="font-display text-3xl font-bold leading-tight">{current.title}</p>
-                <p className="text-sm font-semibold text-ink/60">
-                  <time dateTime={current.date}>{formatLaunchDate(current)}</time>
-                </p>
+                <p className="font-display text-3xl font-bold leading-tight">{current.headline}</p>
+                <p className="text-sm leading-5">Live in {marketsLine(current.markets)}</p>
                 <ul className="list-disc space-y-1 pl-5 text-base leading-6">
                   {current.bullets.slice(0, expanded ? current.bullets.length : 3).map((bullet) => (
                     <li key={bullet}>{bullet}</li>

@@ -13,6 +13,8 @@ export const feedRegions = [
   { id: "uk", label: "UK" },
   { id: "eu", label: "EU" },
   { id: "apac", label: "APAC" },
+  { id: "latam", label: "Latin America" },
+  { id: "mea", label: "Middle East & Africa" },
   { id: "north-america", label: "North America" },
   { id: "multiple", label: "Multiple" },
   { id: "not-stated", label: "Not stated" },

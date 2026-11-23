@@ -11,6 +11,7 @@ const nextConfig = {
       { protocol: "https", hostname: "p16-va-tiktok.ibyteimg.com" },
       { protocol: "https", hostname: "redditinc.com" },
       { protocol: "https", hostname: "cdn.prod.website-files.com" },
+      { protocol: "https", hostname: "about.fb.com" },
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",

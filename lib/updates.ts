@@ -1,3 +1,8 @@
+import { buildExtra } from "@/lib/extra-launches";
+import { headlines, marketOverrides } from "@/lib/headlines";
+import { fallbackExplainer, type Explainer } from "@/lib/explain";
+import { infographicFor } from "@/lib/infographics";
+import { defaultMarkets } from "@/lib/markets";
 import { mediaFor, type LaunchMedia } from "@/lib/media";
 import { channelLabel, regionLabel, type FeedChannelId, type FeedRegionId } from "@/lib/taxonomy";
 
@@ -22,6 +27,9 @@ export type Launch = {
   sourceName: string;
   sourceUrl: string;
   image: LaunchImage;
+  headline: string;
+  markets: string[];
+  explainer: Explainer;
   verified: true;
 };
 
@@ -34,31 +42,42 @@ function inferCountries(region: FeedRegionId, explicit?: string[]) {
 }
 
 function inferCoverage(region: FeedRegionId, countries: string[]): Coverage {
+  if (countries.length > 0 && region !== "global") return "countries";
   if (region === "global") return "global";
-  if (region === "eu") return "region";
+  if (region === "eu" || region === "mea" || region === "latam" || region === "apac") return "region";
   if (region === "not-stated") return "unknown";
-  if (region === "multiple" || region === "apac") return "multi";
-  if (countries.length > 0) return "countries";
+  if (region === "multiple") return "multi";
   return "unknown";
 }
 
-function launch(
-  entry: Omit<Launch, "id" | "image" | "verified" | "countries" | "coverage"> & {
+export function launch(
+  entry: Omit<Launch, "id" | "image" | "verified" | "countries" | "coverage" | "headline" | "markets" | "explainer"> & {
     image?: LaunchImage;
     countries?: string[];
     coverage?: Coverage;
+    headline?: string;
+    markets?: string[];
+    explainer?: Explainer;
   },
 ): Launch {
   const countries = inferCountries(entry.region, entry.countries);
+  const coverage = entry.coverage ?? inferCoverage(entry.region, countries);
+  const headline = entry.headline ?? entry.title;
+  const markets = entry.markets?.length ? entry.markets : defaultMarkets({ region: entry.region, countries, regionNote: entry.regionNote, coverage });
+  const image =
+    infographicFor(entry.slug, headline) ??
+    entry.image ??
+    mediaFor(entry.platform, entry.title, entry.sourceUrl, entry.sourceName, entry.channel);
   return {
     ...entry,
     id: entry.slug,
     countries,
-    coverage: entry.coverage ?? inferCoverage(entry.region, countries),
+    coverage,
+    headline,
+    markets,
+    explainer: entry.explainer ?? fallbackExplainer({ headline, bullets: entry.bullets, platform: entry.platform, sourceName: entry.sourceName, regionNote: entry.regionNote }),
     verified: true,
-    image:
-      entry.image ??
-      mediaFor(entry.platform, entry.title, entry.sourceUrl, entry.sourceName),
+    image,
   };
 }
 
@@ -617,7 +636,13 @@ export const updates: Launch[] = [
     sourceName: "Google",
     sourceUrl: "https://blog.google/products/marketingplatform/360/google-newfront-rethink-ctv-beyond-streaming-with-display-video-360/",
   }),
+  ...buildExtra(launch),
 ];
+
+for (const item of updates) {
+  if (headlines[item.slug]) item.headline = headlines[item.slug];
+  if (marketOverrides[item.slug]) item.markets = marketOverrides[item.slug];
+}
 
 export type LaunchUpdate = Launch;
 

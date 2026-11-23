@@ -22,8 +22,11 @@ export default function WorldMap({ launches }: { launches: Launch[] }) {
 
   const buckets = [
     { id: "global", label: "Global", items: launches.filter((item) => item.coverage === "global") },
-    { id: "multi", label: "Multi-region", items: launches.filter((item) => item.coverage === "multi") },
-    { id: "region", label: "Europe-wide", items: launches.filter((item) => item.coverage === "region") },
+    { id: "multi", label: "Multi-region", items: launches.filter((item) => item.coverage === "multi" || item.region === "multiple") },
+    { id: "eu", label: "Europe-wide", items: launches.filter((item) => item.region === "eu" && item.countries.length === 0) },
+    { id: "apac", label: "APAC-wide", items: launches.filter((item) => item.region === "apac" && item.countries.length === 0) },
+    { id: "mea", label: "Middle East & Africa", items: launches.filter((item) => item.region === "mea") },
+    { id: "latam", label: "Latin America", items: launches.filter((item) => item.region === "latam") },
     { id: "unknown", label: "Country not stated", items: launches.filter((item) => item.coverage === "unknown") },
   ];
 
