@@ -2,8 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Fraunces } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import AppShell from "@/components/shell/AppShell";
 import JsonLd from "@/components/JsonLd";
 import { siteConfig } from "@/config/site";
 
@@ -18,7 +17,7 @@ const display = Fraunces({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#fff4ea",
+  themeColor: "#141a2a",
   colorScheme: "light",
 };
 
@@ -68,9 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <body className="flex min-h-screen flex-col font-sans text-ink antialiased">
         <JsonLd data={orgLd} />
-        <Header />
-        <div className="flex-1">{children}</div>
-        <Footer />
+        <AppShell>{children}</AppShell>
         <Analytics />
       </body>
     </html>

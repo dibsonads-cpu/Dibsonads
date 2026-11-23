@@ -38,15 +38,17 @@ Required fields:
 | `platformSlug` | Optional. Use a directory slug (`meta`, `tiktok`, `google-ads`) when one exists. |
 | `channel` | `social`, `programmatic`, `ai-ads`, `retail-media`, `search`, or `ctv-video`. |
 | `region` | `global`, `us`, `uk`, `eu`, `apac`, `north-america`, `multiple`, or `not-stated`. |
+| `countries` | Optional ISO codes, such as `["US", "IN"]`. Leave unset for a plain US, UK, or North America item. Do not invent a country the source did not name. |
 | `regionNote` | Optional sentence when the announcement is more specific than the chip. |
 | `date` | ISO `YYYY-MM-DD`. If the source only gives a month, use the first of that month and set `datePrecision: "month"`. |
 | `sourceName` | Publication or company, shown on the card. |
 | `sourceUrl` | The specific article, not a homepage. |
+| `image` | Optional. If you omit it, a generated cover is used. For a real photo, put the file in `public/photos` and set `src`, `alt`, `credit`, `licence`, and `sourceUrl`. Only use a photo whose licence allows this site (Unsplash, Pexels, CC, or a press kit that allows editorial use). |
 | `verified` | Leave this to the `launch()` helper. It is always `true`. Do not add a launch you have not opened. |
 
-The homepage, `/updates`, sitemap, `/feed.xml`, and `/rss.xml` pick the new object up on the next build. Filters are the query string: `/?channel=social&platform=TikTok&month=3&year=2026&region=us`.
+The feed, dashboard, map, sitemap, `/feed.xml`, and `/rss.xml` pick the new object up on the next build. A platform shortcut is `/dashboard?platform=TikTok`.
 
-Covers are original SVG art in `public/covers`. Do not hotlink a newsroom photo or drop in a platform logo. If you later have a press image with a licence that allows this use, replace `image` on that entry and keep `credit` and `licence` filled in.
+Covers are original SVG art in `public/covers`, made with `node scripts/generate-covers.mjs`. Do not paste a platform logo. A licensed photo is stored in the repo, not hotlinked.
 
 ## Other content
 

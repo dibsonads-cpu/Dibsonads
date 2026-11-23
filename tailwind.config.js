@@ -7,9 +7,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: "#24124d",
-        paper: "#fff4ea",
-        coral: "#ff5d3a",
+        ink: "#1c2430",
+        paper: "#f4f1ea",
+        navy: "#141a2a",
+        coral: "#d7263d",
         magenta: "#ff2f8b",
         violet: "#6d4aff",
         sun: "#ffd23f",

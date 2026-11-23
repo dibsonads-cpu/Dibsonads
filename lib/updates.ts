@@ -5,7 +5,10 @@ export type LaunchImage = {
   alt: string;
   credit: string;
   licence: string;
+  sourceUrl?: string;
 };
+
+export type Coverage = "global" | "countries" | "region" | "multi" | "unknown";
 
 export type Launch = {
   id: string;
@@ -17,6 +20,8 @@ export type Launch = {
   channel: FeedChannelId;
   region: FeedRegionId;
   regionNote?: string;
+  countries: string[];
+  coverage: Coverage;
   date: string;
   datePrecision?: "day" | "month";
   sourceName: string;
@@ -34,16 +39,124 @@ function cover(slug: string, title: string): LaunchImage {
   };
 }
 
-function launch(entry: Omit<Launch, "id" | "image" | "verified"> & { image?: LaunchImage }): Launch {
+function inferCountries(region: FeedRegionId, explicit?: string[]) {
+  if (explicit) return explicit;
+  if (region === "us") return ["US"];
+  if (region === "uk") return ["GB"];
+  if (region === "north-america") return ["US", "CA"];
+  return [];
+}
+
+function inferCoverage(region: FeedRegionId, countries: string[]): Coverage {
+  if (region === "global") return "global";
+  if (region === "eu") return "region";
+  if (region === "not-stated") return "unknown";
+  if (region === "multiple" || region === "apac") return "multi";
+  if (countries.length > 0) return "countries";
+  return "unknown";
+}
+
+function launch(
+  entry: Omit<Launch, "id" | "image" | "verified" | "countries" | "coverage"> & {
+    image?: LaunchImage;
+    countries?: string[];
+    coverage?: Coverage;
+  },
+): Launch {
+  const countries = inferCountries(entry.region, entry.countries);
   return {
     ...entry,
     id: entry.slug,
+    countries,
+    coverage: entry.coverage ?? inferCoverage(entry.region, countries),
     verified: true,
     image: entry.image ?? cover(entry.slug, entry.title),
   };
 }
 
 export const updates: Launch[] = [
+  launch({
+    slug: "dv360-spotify-audiences",
+    title: "DV360 opens Google audiences on Spotify in the US and India",
+    bullets: [
+      "Display & Video 360 buyers in the US and India can run video and audio on Spotify with Google audiences.",
+      "It is part of the November 2026 Google Marketing Platform drop.",
+    ],
+    platform: "Display & Video 360",
+    channel: "programmatic",
+    region: "multiple",
+    countries: ["US", "IN"],
+    regionNote: "United States and India.",
+    date: "2026-11-18",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/marketingplatform/360/google-marketing-platform-drop-november/",
+  }),
+  launch({
+    slug: "dv360-pinterest-inventory",
+    title: "DV360 adds programmatic Pinterest inventory",
+    bullets: [
+      "Advertisers can buy Pinterest video and display inventory from Display & Video 360.",
+      "Google describes it as premium inventory next to high-intent Pinterest audiences.",
+      "The post does not name the countries.",
+    ],
+    platform: "Display & Video 360",
+    channel: "programmatic",
+    region: "not-stated",
+    date: "2026-11-18",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/marketingplatform/360/google-marketing-platform-drop-november/",
+  }),
+  launch({
+    slug: "dv360-loblaw-canada",
+    title: "DV360 adds Loblaw shopper audiences in Canada",
+    bullets: [
+      "Loblaw Advance audiences and closed-loop SKU measurement are in DV360’s Commerce Media Suite.",
+      "The suite already includes retailers such as Walmart and Costco.",
+      "This addition is for Canada.",
+    ],
+    platform: "Display & Video 360",
+    channel: "retail-media",
+    region: "north-america",
+    countries: ["CA"],
+    regionNote: "Canada.",
+    date: "2026-11-18",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/marketingplatform/360/google-marketing-platform-drop-november/",
+  }),
+  launch({
+    slug: "meta-product-showcase-default",
+    title: "Meta can turn Product showcase on by default",
+    bullets: [
+      "From Marketing API v27.0, Meta may enable Product showcase on ads unless an advertiser opts out.",
+      "Opt out by setting product extensions enroll status to OPT_OUT.",
+      "New Sales ad sets aimed at specific phones also default to other mobile devices, unless that is switched off.",
+    ],
+    platform: "Meta",
+    platformSlug: "meta",
+    channel: "social",
+    region: "not-stated",
+    date: "2026-11-04",
+    sourceName: "Meta for Developers",
+    sourceUrl: "https://developers.facebook.com/blog/post/2026/11/04/introducing-graph-api-v27-and-marketing-api-v27/",
+  }),
+  launch({
+    slug: "amazon-uk-geographic-insights",
+    title: "Amazon Ads opens UK geographic insights",
+    bullets: [
+      "Geographic Insights and Activation is available to UK advertisers, with a map of regional performance.",
+      "Amazon also announced location-based interactive video ads on Prime Video, planned by the end of 2026.",
+      "Prime Video was set to join Barb CFlight measurement in the UK.",
+    ],
+    platform: "Amazon Ads",
+    platformSlug: "amazon-ads",
+    channel: "ctv-video",
+    region: "uk",
+    countries: ["GB"],
+    date: "2026-10-07",
+    sourceName: "About Amazon UK",
+    sourceUrl:
+      "https://www.aboutamazon.co.uk/news/entertainment/the-2026-amazon-uk-upfront-brings-industry-standard-measurement-to-prime-video-and-local-relevance-to-national-campaigns",
+  }),
   launch({
     slug: "microsoft-bing-ai-overview-ads",
     title: "Microsoft Advertising places ads in Bing AI Overviews",
@@ -462,7 +575,8 @@ export const updates: Launch[] = [
     platformSlug: "google-ads",
     channel: "ai-ads",
     region: "multiple",
-    regionNote: "AI Mode test: US. Peak Points: US, UK, Canada, Australia. AI Overviews: select countries.",
+    countries: ["US", "GB", "CA", "AU"],
+    regionNote: "Named in the post: AI Mode in the US. Peak Points in the US, UK, Canada, and Australia. AI Overviews: select countries, not fully listed.",
     date: "2025-05-21",
     sourceName: "Google Ads Help",
     sourceUrl: "https://support.google.com/google-ads/answer/16290177?hl=en",
@@ -516,6 +630,79 @@ export const updates: Launch[] = [
     sourceUrl: "https://blog.google/products/marketingplatform/360/google-newfront-rethink-ctv-beyond-streaming-with-display-video-360/",
   }),
 ];
+
+function photo(file: string, alt: string, credit: string, licence: string, sourceUrl: string): LaunchImage {
+  return { src: `/photos/${file}`, alt, credit, licence, sourceUrl };
+}
+
+const photos: Record<string, LaunchImage> = {
+  phone: photo(
+    "phone.jpg",
+    "A person holding a smartphone outdoors",
+    "Jonatan Svensson Glad",
+    "CC BY-SA 4.0",
+    "https://commons.wikimedia.org/wiki/File:Girl_Holding_a_Smartphone.jpg",
+  ),
+  tv: photo(
+    "tv.jpg",
+    "A flat-screen television in a room",
+    "Evan Prodromou",
+    "CC BY-SA 4.0",
+    "https://commons.wikimedia.org/wiki/File:A_flat-screen_television.jpg",
+  ),
+  city: photo(
+    "city.jpg",
+    "New York City at night",
+    "Paulo Barcellos Jr.",
+    "CC BY-SA 2.0",
+    "https://commons.wikimedia.org/wiki/File:New_York_City_at_night_HDR.jpg",
+  ),
+  shoppers: photo(
+    "shoppers.jpg",
+    "Shoppers inside a supermarket",
+    "Jason Zhang",
+    "CC BY-SA 3.0",
+    "https://commons.wikimedia.org/wiki/File:Kai_Wei_Supermarket_shoppers,_December_2018.jpg",
+  ),
+  laptop: photo(
+    "laptop.jpg",
+    "A person working on a laptop at a desk",
+    "Robert Durec",
+    "CC BY 4.0",
+    "https://commons.wikimedia.org/wiki/File:Robert_Durec_portrait_working_on_laptop_in_studio.jpg",
+  ),
+};
+
+const photoForSlug: Record<string, LaunchImage> = {
+  "meta-threads-ads-all-markets": photos.phone,
+  "tiktok-newfronts-high-impact-formats": photos.phone,
+  "pinterest-visual-search-ads": photos.phone,
+  "meta-newfronts-reels-trending": photos.phone,
+  "reddit-max-campaigns-beta": photos.phone,
+  "tiktok-europe-streaming-ads": photos.phone,
+  "meta-product-showcase-default": photos.phone,
+  "youtube-vrc-non-skip": photos.tv,
+  "youtube-brandcast-2026": photos.tv,
+  "youtube-demand-gen-may-2026": photos.tv,
+  "amazon-uk-geographic-insights": photos.tv,
+  "dv360-vertical-video": photos.city,
+  "dv360-newfront-2025": photos.city,
+  "dv360-spotify-audiences": photos.city,
+  "dv360-pinterest-inventory": photos.city,
+  "amazon-sponsored-products-video": photos.shoppers,
+  "pinterest-where-to-buy": photos.shoppers,
+  "amazon-ads-prompts": photos.shoppers,
+  "dv360-loblaw-canada": photos.shoppers,
+  "google-ai-max-for-search": photos.laptop,
+  "google-ai-max-for-shopping": photos.laptop,
+  "microsoft-bing-ai-overview-ads": photos.laptop,
+  "google-lsa-home-listings": photos.laptop,
+};
+
+for (const update of updates) {
+  const assigned = photoForSlug[update.slug];
+  if (assigned) update.image = assigned;
+}
 
 export type LaunchUpdate = Launch;
 

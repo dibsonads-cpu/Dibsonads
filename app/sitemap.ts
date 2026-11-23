@@ -5,7 +5,7 @@ import { platforms } from "@/lib/platforms";
 import { updates } from "@/lib/updates";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPaths = ["", "/updates", "/learn", "/platforms", "/advertise"];
+  const staticPaths = ["", "/map", "/dashboard", "/platforms", "/learn", "/saved", "/updates", "/advertise"];
   const staticEntries: MetadataRoute.Sitemap = staticPaths.map((path) => ({
     url: `${siteConfig.url}${path || "/"}`.replace(/\/$/, "") || siteConfig.url,
     changeFrequency: path === "" || path === "/updates" ? "weekly" : "monthly",
