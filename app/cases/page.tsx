@@ -1,5 +1,4 @@
-import Link from "next/link";
-import MediaVisual from "@/components/feed/MediaVisual";
+import CaseGrid from "@/components/cases/CaseGrid";
 import JsonLd from "@/components/JsonLd";
 import { caseStudies } from "@/lib/cases";
 import { absoluteUrl, buildMetadata } from "@/lib/seo";
@@ -10,7 +9,12 @@ export const metadata = buildMetadata({
   path: "/cases",
 });
 
-export default function CasesPage() {
+export default async function CasesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ industry?: string; channel?: string; country?: string }>;
+}) {
+  const params = await searchParams;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -31,23 +35,16 @@ export default function CasesPage() {
       <p className="mt-1 max-w-2xl text-sm text-ink/70">
         Real brand examples. Numbers appear only when the source published them.
       </p>
-      <ul className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-        {[...caseStudies]
-          .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.brand.localeCompare(b.brand)))
-          .map((item) => (
-          <li key={item.slug}>
-            <Link href={`/cases/${item.slug}`} className="flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 shadow-[0_10px_28px_rgba(20,26,42,0.12)]" style={{ background: item.tint }}>
-              <div className="relative aspect-[8/5] bg-white">
-                <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
-              </div>
-              <div className="p-3 text-navy">
-                <h2 className="line-clamp-3 text-[15px] font-semibold leading-snug">{item.title}</h2>
-                <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-navy/70">{item.brand} · {item.platform}</p>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-5">
+        <CaseGrid
+          studies={[...caseStudies].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.brand.localeCompare(b.brand)))}
+          initial={{
+            industry: params.industry ?? "",
+            channel: params.channel ?? "",
+            country: params.country ?? "",
+          }}
+        />
+      </div>
     </main>
   );
 }

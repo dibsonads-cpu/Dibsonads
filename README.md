@@ -50,6 +50,9 @@ One object in `lib/cases.ts`.
 | `results` | Only figures the source published. If there is no number, say so. |
 | `why` | One or two plain lines. |
 | `whyInferred` | `true` when the source does not say why it worked. The page labels that section Suggestion. |
+| `industry` | The client's industry, such as Travel or Retail. |
+| `channel` | `social`, `ctv-video`, `retail-media`, `search`, `programmatic`, or `ai-ads`. |
+| `country` | The country or market the source names, or `Not stated`. |
 | `platform` | The ad platform. |
 | `launchSlugs` | Related launches. Use `[]` if none fit. |
 | `markets` | Where the case ran, or "Not stated". |

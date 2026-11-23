@@ -7,6 +7,12 @@ export type CaseStudy = {
   /** Result-led line for the card and the page title. */
   title: string;
   platform: string;
+  /** Industry of the client, from the source. */
+  industry: string;
+  /** Feed channel id: social, ctv-video, retail-media, search, and so on. */
+  channel: string;
+  /** Country or market the source names. "Not stated" when it does not. */
+  country: string;
   launchSlugs: string[];
   /** Platform, product, and format, from the source. */
   used: string;
@@ -29,6 +35,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Booking.com",
     title: "22.3 million people saw The Idea of You",
     platform: "Amazon Ads",
+    industry: "Travel",
+    channel: "ctv-video",
+    country: "Not stated",
     launchSlugs: ["amazon-sponsored-tv-expansion", "amazon-uk-geographic-insights"],
     used: "Amazon Ads on Prime Video. Interactive campaigns built with the Brand Innovation Lab around The Idea of You and season two of The Rings of Power.",
     results: "Amazon says The Idea of You flight reached 22.3 million unique users, with a 10% lift in aided awareness and a 9% lift in brand opinion. The Rings of Power flight showed an 8% lift in aided awareness and an 11% lift in brand opinion. A later brand study said 73% were more likely to use Booking.com. Figures are advertiser-provided, 2024.",
@@ -46,6 +55,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Fizz Mobile",
     title: "+21% awareness beside Fallout",
     platform: "Amazon Ads",
+    industry: "Telecom",
+    channel: "ctv-video",
+    country: "Canada",
     launchSlugs: ["amazon-sponsored-tv-expansion"],
     used: "Prime Video ads in Canada around the Fallout premiere, with remarketing on other Amazon screens.",
     results: "Amazon's brand lift study in Canada (11 April–17 May 2024) reported a 21% lift in awareness and a 25% lift in ad recall. The campaign had 37 million impressions and reached 3.5 million viewers. Prime Video ads were 69% of that reach.",
@@ -63,6 +75,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Jeep",
     title: "96.3 million impressions in Italy",
     platform: "Amazon Ads",
+    industry: "Automotive",
+    channel: "ctv-video",
+    country: "Italy",
     launchSlugs: ["amazon-sponsored-tv-expansion"],
     used: "A five-episode series, The Women Era, on Prime Video and Fire TV in Italy, with Amazon DSP used to remarket.",
     results: "Amazon's Italy data for 3–31 December 2024: 42,100 unique streams, 514,000 minutes watched, 96.3 million impressions (118.85% of goal), a 93.1% video completion rate, and a 1.2% click-through rate on the Fire TV Feature Rotator.",
@@ -80,6 +95,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Kérastase",
     title: "Searches up 80% for Première",
     platform: "Amazon Ads",
+    industry: "Beauty",
+    channel: "ctv-video",
+    country: "Italy",
     launchSlugs: ["amazon-sponsored-tv-expansion"],
     used: "Prime Video and Fire TV in Italy, with Amazon Marketing Cloud audiences and educational pages for the Première line.",
     results: "Amazon and Kantar, Italy, September–October 2024: 13.3 million unique users, awareness up 6.5%, ad awareness up 12.2%, consideration up 7.1%, brand searches on Amazon.it up 80%, and sell-out up 30%.",
@@ -97,6 +115,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Wendy's",
     title: "Nearly 52 million impressions in a day",
     platform: "Snap",
+    industry: "Restaurants",
+    channel: "social",
+    country: "Not stated",
     launchSlugs: ["snap-newfronts-chat-ads", "snap-sponsored-snaps-global"],
     used: "Snap Sponsored Snaps, a full-screen video in the Chat inbox.",
     results: "Snap says Wendy's saw nearly 52 million impressions in a single day and grew Public Profile followers by 54%. The country is not stated in the post.",
@@ -114,6 +135,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "ASICS",
     title: "2 million people reached in Chat",
     platform: "Snap",
+    industry: "Sport",
+    channel: "social",
+    country: "Not stated",
     launchSlugs: ["snap-sponsored-snaps-global"],
     used: "Sponsored Snaps with Zeno Group, promoting a running shoe line in the Chat inbox.",
     results: "Snap says the ASICS work reached 2 million unique Snapchatters in the Chat inbox. eBay's campaign, mentioned beside it, achieved nearly twice the incremental unique reach. No further split by country is given.",
@@ -131,6 +155,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Prime Video",
     title: "4× the clicks they had planned",
     platform: "Pinterest",
+    industry: "Entertainment",
+    channel: "social",
+    country: "Brazil",
     launchSlugs: ["pinterest-performance-plus"],
     used: "Pinterest showcase ads, video, and carousel Pins, made with Dojo Agency for people who already watch adult animation. Pinterest tells this as a Brazil story.",
     results: "Pinterest says the month-long campaign delivered 2× the planned impressions, 4× the planned clicks, engagement almost 50% higher, CPM almost 70% under the target, and CPC down more than 80%.",
@@ -148,6 +175,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Wayfair",
     title: "+237% clicks in two weeks",
     platform: "Pinterest",
+    industry: "Home",
+    channel: "search",
+    country: "Not stated",
     launchSlugs: ["pinterest-top-of-search"],
     used: "Pinterest Top of Search ads, which sit in the top ten search results. Wayfair was an early tester.",
     results: "Pinterest says Wayfair's click-through rate rose 237% over two weeks versus its usual campaigns. Across the beta, Pinterest also cites a 29% higher click-through rate than standard campaigns.",
@@ -165,6 +195,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Canadian Tire",
     title: "+16.5% more store visits",
     platform: "Pinterest",
+    industry: "Retail",
+    channel: "retail-media",
+    country: "Canada",
     launchSlugs: ["pinterest-top-of-search", "pinterest-performance-cropping"],
     used: "Pinterest local inventory ads in Canada, showing in-stock prices near the shopper. Pinterest names Canadian Tire as the first Canadian retailer to test them.",
     results: "Pinterest says Canadian Tire reached interested shoppers 48% more efficiently than with standard shopping campaigns and saw a 16.5% higher in-store visit rate.",
@@ -182,6 +215,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "Lenovo",
     title: "+7% purchase conversions",
     platform: "Reddit",
+    industry: "Technology",
+    channel: "social",
+    country: "Not stated",
     launchSlugs: ["reddit-dynamic-product-ads"],
     used: "Reddit Dynamic Product Ads, run with Assembly Global as an always-on campaign for purchases.",
     results: "Reddit quotes Gabby Mazzone, Lenovo's NA eCommerce media lead: Dynamic Product Ads delivered a 7% lift in purchase conversions. The post also says advertisers running DPA and standard conversion campaigns in Q1 2025 saw 2× the ROAS from DPA.",
@@ -199,6 +235,9 @@ export const caseStudies: CaseStudy[] = [
     brand: "VistaPrint",
     title: "4× return on ad spend",
     platform: "Reddit",
+    industry: "Printing",
+    channel: "social",
+    country: "Not stated",
     launchSlugs: ["reddit-dynamic-product-ads"],
     used: "Reddit Dynamic Product Ads, as one part of a full-funnel plan.",
     results: "Reddit says VistaPrint achieved a 4× return on ad spend with Dynamic Product Ads. No country is named.",
@@ -219,4 +258,8 @@ export function getCase(slug: string) {
 
 export function casesForLaunch(slug: string) {
   return caseStudies.filter((item) => item.launchSlugs.includes(slug));
+}
+
+export function caseOptions(field: "industry" | "channel" | "country") {
+  return Array.from(new Set(caseStudies.map((item) => item[field]))).sort((a, b) => a.localeCompare(b));
 }
