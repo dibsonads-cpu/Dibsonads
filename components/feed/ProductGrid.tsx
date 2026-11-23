@@ -151,26 +151,28 @@ export default function ProductGrid({
           {visible.map((item) => (
             <li key={item.slug} className="min-w-0">
               <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_28px_rgba(20,26,42,0.12)]">
-                <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="flex h-full min-w-0 flex-col text-left">
+                <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="block w-full text-left">
                   <div className="relative aspect-[8/5] overflow-hidden">
                     <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
                   </div>
-                  <div className="bg-white p-3">
+                </button>
+                <div className="flex items-start gap-2 bg-white p-3">
+                  <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="min-w-0 flex-1 text-left">
                     <h2 className="line-clamp-3 text-[15px] font-semibold leading-snug">{item.headline}</h2>
                     <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-ink/50">
                       {item.platform} · {channelLabel(item.channel)}
                     </p>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  aria-label={saved.includes(item.slug) ? "Remove from saved" : "Save"}
-                  aria-pressed={saved.includes(item.slug)}
-                  onClick={() => toggleSave(item.slug)}
-                  className="absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-lg shadow-sm"
-                >
-                  {saved.includes(item.slug) ? "♥" : "♡"}
-                </button>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={saved.includes(item.slug) ? "Remove from saved" : "Save"}
+                    aria-pressed={saved.includes(item.slug)}
+                    onClick={() => toggleSave(item.slug)}
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-lg"
+                  >
+                    {saved.includes(item.slug) ? "♥" : "♡"}
+                  </button>
+                </div>
               </article>
             </li>
           ))}
@@ -181,8 +183,8 @@ export default function ProductGrid({
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="quick-title">
-          <div className="grid max-h-[100dvh] w-full max-w-5xl overflow-y-auto bg-white sm:max-h-[92vh] sm:grid-cols-2 sm:overflow-hidden sm:rounded-2xl">
-            <div className="relative aspect-[8/5] w-full self-start">
+          <div className="flex max-h-[100dvh] w-full max-w-3xl flex-col overflow-y-auto bg-white sm:max-h-[92vh] sm:rounded-3xl sm:shadow-xl">
+            <div className="relative aspect-[8/5] w-full shrink-0">
               <MediaVisual media={open.image} platform={open.platform} className="absolute inset-0" />
               <button type="button" onClick={() => step(-1)} className="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xl shadow" aria-label="Previous launch">
                 ‹
