@@ -1,8 +1,13 @@
 import { updates } from "@/lib/data";
 import { notFound } from "next/navigation";
 
-export default function UpdatePage({ params }: { params: { slug: string } }) {
-  const update = updates.find((u) => u.slug === params.slug);
+export default async function UpdatePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const update = updates.find((u) => u.slug === slug);
   if (!update) notFound();
 
   const jsonLd = {
