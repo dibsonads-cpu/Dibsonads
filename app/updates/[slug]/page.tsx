@@ -1,13 +1,16 @@
 import Link from "next/link";
 import MediaVisual from "@/components/feed/MediaVisual";
+import ExplainerSections from "@/components/launch/ExplainerSections";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/JsonLd";
 import NewsletterForm from "@/components/NewsletterForm";
 import { siteConfig } from "@/config/site";
+import { casesForLaunch } from "@/lib/cases";
 import { guides } from "@/lib/learn";
+import { marketsLine } from "@/lib/markets";
 import { getPlatform } from "@/lib/platforms";
 import { channelLabel, regionLabel } from "@/lib/taxonomy";
-import { formatLaunchDate, getUpdate, launchDek, updates } from "@/lib/updates";
+import { formatLaunchDate, getUpdate, updates } from "@/lib/updates";
 import { absoluteUrl, buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -19,8 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const update = getUpdate(slug);
   if (!update) return {};
   return buildMetadata({
-    title: update.title,
-    description: launchDek(update),
+    title: update.headline,
+    description: update.explainer.oneLine,
     path: `/updates/${update.slug}`,
     kicker: `${update.platform} · ${regionLabel(update.region)}`,
     ogType: "article",
@@ -34,13 +37,14 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
 
   const platform = update.platformSlug ? getPlatform(update.platformSlug) : undefined;
   const relatedGuides = guides.filter((guide) => guide.relatedUpdateSlugs.includes(update.slug));
+  const relatedCases = casesForLaunch(update.slug);
   const url = absoluteUrl(`/updates/${update.slug}`);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    headline: update.title,
-    description: launchDek(update),
+    headline: update.headline,
+    description: update.explainer.oneLine,
     datePublished: update.date,
     dateModified: update.date,
     mainEntityOfPage: url,
@@ -59,7 +63,7 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
         <Link href="/" className="underline">Desk</Link>
         <span> / {update.platform}</span>
       </p>
-      <div className="relative mt-4 aspect-[16/9] overflow-hidden rounded-3xl bg-white">
+      <div className="relative mt-4 aspect-square overflow-hidden rounded-3xl border border-black/10 bg-white shadow-sm">
         <MediaVisual media={update.image} platform={update.platform} className="absolute inset-0" />
       </div>
       <p className="mt-2 text-xs text-ink/60">
@@ -71,18 +75,18 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
         <span className="rounded-full bg-sun px-2 py-1">{regionLabel(update.region)}</span>
         <span className="rounded-full bg-mint px-2 py-1">Verified</span>
       </div>
-      <h1 className="mt-4 font-display text-4xl font-bold leading-tight md:text-5xl">{update.title}</h1>
+      <h1 className="mt-4 font-display text-4xl font-bold leading-tight md:text-5xl">{update.headline}</h1>
       <p className="mt-3 text-sm font-semibold text-ink/70">
         <time dateTime={update.date}>{formatLaunchDate(update)}</time>
         {" · "}
         {update.platform}
+        {" · "}
+        {channelLabel(update.channel)}
       </p>
-      <ul className="mt-5 list-disc space-y-2 pl-5 leading-7">
-        {update.bullets.map((bullet) => (
-          <li key={bullet}>{bullet}</li>
-        ))}
-      </ul>
-      {update.regionNote ? <p className="mt-4 text-sm leading-6 text-ink/80">{update.regionNote}</p> : null}
+      <p className="mt-3 text-sm font-semibold leading-6">Live in {marketsLine(update.markets)}</p>
+      <div className="mt-6 rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
+        <ExplainerSections explainer={update.explainer} />
+      </div>
       <a href={update.sourceUrl} target="_blank" rel="noopener noreferrer" className="sticker mt-6 inline-flex rounded-full bg-ink px-5 py-2 font-extrabold text-white">
         {update.sourceName}
       </a>
@@ -93,6 +97,18 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
         <Link href={`/?channel=${update.channel}`} className="chip rounded-full bg-white px-3 py-1">More {channelLabel(update.channel)}</Link>
         <Link href={`/?region=${update.region}`} className="chip rounded-full bg-white px-3 py-1">More in {regionLabel(update.region)}</Link>
       </div>
+      {relatedCases.length > 0 ? (
+        <section className="mt-10">
+          <h2 className="font-display text-2xl font-bold">Brand examples</h2>
+          <ul className="mt-3 space-y-2">
+            {relatedCases.map((item) => (
+              <li key={item.slug}>
+                <Link href={`/cases/${item.slug}`} className="font-bold text-violet underline">{item.brand}: {item.title}</Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       {relatedGuides.length > 0 ? (
         <section className="mt-10">
           <h2 className="font-display text-2xl font-bold">Guides that use this</h2>

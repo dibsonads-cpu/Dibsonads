@@ -5,8 +5,9 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import MediaVisual from "@/components/feed/MediaVisual";
 import SwipeDeck from "@/components/feed/SwipeDeck";
-import { coverageFlag } from "@/lib/flags";
-import { channelLabel, feedChannels, feedRegions, regionLabel } from "@/lib/taxonomy";
+import ExplainerSections from "@/components/launch/ExplainerSections";
+import { marketsLine } from "@/lib/markets";
+import { channelLabel, feedChannels, feedRegions } from "@/lib/taxonomy";
 import { formatLaunchDate, launchPlatforms, type Launch } from "@/lib/updates";
 
 const SAVED = "dibsonads-saved";
@@ -138,21 +139,21 @@ export default function ProductGrid({
       {filters.view === "swipe" ? (
         <SwipeDeck launches={visible} />
       ) : (
-        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-4 min-[1440px]:grid-cols-5">
+        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 min-[1440px]:grid-cols-5">
           {visible.map((item) => (
             <li key={item.slug} className="min-w-0">
-              <article className="group relative flex h-full flex-col bg-white">
-                <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="block min-w-0 text-left">
-                  <div className="relative aspect-[3/4] overflow-hidden bg-[#f3f3f3]">
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+                <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="flex h-full min-w-0 flex-col text-left">
+                  <div className="relative aspect-square overflow-hidden bg-[#f3f3f3]">
                     <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
                   </div>
-                  <h2 className="mt-3 line-clamp-2 px-1 text-sm font-semibold leading-snug">{item.title}</h2>
-                  <p className="mt-1 px-1 text-xs text-ink/60">
-                    {item.platform} · {channelLabel(item.channel)}
-                  </p>
-                  <p className="mt-0.5 px-1 pb-3 text-xs text-ink/50">
-                    {formatLaunchDate(item)} · {coverageFlag(item.coverage, item.countries, item.region)} {regionLabel(item.region)}
-                  </p>
+                  <div className="flex flex-1 flex-col gap-1 border-t border-black/10 p-3">
+                    <h2 className="line-clamp-3 text-sm font-semibold leading-snug">{item.headline}</h2>
+                    <p className="text-xs font-semibold">{item.platform}</p>
+                    <p className="text-xs text-ink/60">{channelLabel(item.channel)}</p>
+                    <p className="line-clamp-3 text-xs leading-5 text-ink/70">Live in {marketsLine(item.markets)}</p>
+                    <p className="mt-auto pt-1 text-[11px] text-ink/45">{formatLaunchDate(item)}</p>
+                  </div>
                 </button>
                 <button
                   type="button"
@@ -174,7 +175,7 @@ export default function ProductGrid({
       {open ? (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="quick-title">
           <div className="grid max-h-[100dvh] w-full max-w-5xl overflow-y-auto bg-white sm:max-h-[92vh] sm:grid-cols-2">
-            <div className="relative min-h-[240px] bg-[#f3f3f3] sm:min-h-[520px]">
+            <div className="relative aspect-square bg-[#f3f3f3] sm:aspect-auto sm:min-h-[520px]">
               <MediaVisual media={open.image} platform={open.platform} className="absolute inset-0" />
               <button type="button" onClick={() => step(-1)} className="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xl shadow" aria-label="Previous launch">
                 ‹
@@ -186,18 +187,15 @@ export default function ProductGrid({
             <div className="flex flex-col gap-4 p-5 sm:p-8">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-xs font-semibold uppercase tracking-wide text-ink/50">
-                  {open.platform} · {channelLabel(open.channel)} · {formatLaunchDate(open)} · {regionLabel(open.region)}
+                  {open.platform} · {channelLabel(open.channel)} · {formatLaunchDate(open)}
                 </p>
                 <button type="button" onClick={() => write({ ...filters, item: "" })} className="min-h-11 shrink-0 px-2 text-sm font-semibold">
                   Close
                 </button>
               </div>
-              <h2 id="quick-title" className="font-display text-3xl font-bold leading-tight">{open.title}</h2>
-              <ul className="list-disc space-y-2 pl-5 text-sm leading-6">
-                {open.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
+              <h2 id="quick-title" className="font-display text-3xl font-bold leading-tight">{open.headline}</h2>
+              <p className="text-sm font-semibold">Live in {marketsLine(open.markets)}</p>
+              <ExplainerSections explainer={open.explainer} />
               <p className="text-xs leading-5 text-ink/60">
                 {open.image.credit}. {open.image.licence}{" "}
                 <a className="underline" href={open.image.sourceUrl}>Credit link</a>

@@ -5,7 +5,13 @@ export type LaunchMedia = {
   credit: string;
   sourceUrl: string;
   licence: string;
+  /** cover fills the square. contain keeps the whole frame and pads the rest. */
+  fit?: "cover" | "contain";
 };
+
+export const PHOTO_LICENCE = "Unsplash Licence. Real photograph, not generated. Downloaded into this repository.";
+export const COMMONS_BY = "Creative Commons Attribution 4.0. Real photograph, not generated.";
+export const COMMONS_BY_SA = "Creative Commons Attribution-ShareAlike 4.0. Real photograph, not generated.";
 
 export const ARTICLE_TERMS =
   "Official image from the source article, embedded from the publisher and linked. Not copied into this repository.";
@@ -63,6 +69,30 @@ const articleImages: Record<string, string> = {
     "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_AI_Max_in_Search_campaigns_Hero_1080p_.width-1300.png",
   "https://blog.google/products/marketingplatform/360/google-newfront-rethink-ctv-beyond-streaming-with-display-video-360/":
     "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/newfront_still_copy.width-1300.png",
+  "https://blog.google/products/ads-commerce/new-demand-gen-features-2025/":
+    "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Demand_Gen_-_Static_banner-27_Jan.width-1300.png",
+  "https://blog.google/products/ads-commerce/demand-gen-drop-october-2025/":
+    "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/YTAM-Demand_Gen_for_October-01.max-1440x810.png",
+  "https://about.ads.microsoft.com/en/blog/post/february-2025/new-performance-max-tools-and-other-product-updates-for-february":
+    "https://about.ads.microsoft.com/content/dam/sites/msa-about/global/common/content-lib/blogs/blog/2025/02/blog-65597-hero-833x469.jpg",
+  "https://about.ads.microsoft.com/en/blog/post/march-2025/transforming-the-future-of-audience-engagement":
+    "https://about.ads.microsoft.com/content/dam/sites/msa-about/global/common/content-lib/blogs/blog/2025/03/66452-Accelerate-Blog-Post-Hero-Image-MS-C1a_2.png",
+  "https://about.ads.microsoft.com/en/blog/post/may-2025/ads-studio-in-editor-and-other-product-updates-for-may":
+    "https://about.ads.microsoft.com/content/dam/sites/msa-about/global/common/content-lib/blogs/blog/2025/05/blog-50361-hero-833x469.png",
+  "https://newsroom.tiktok.com/en-US/tiktok-symphony-updates":
+    "https://p16-va-tiktok.ibyteimg.com/obj/musically-maliva-obj/0dbf03eddf22c0b99e0911fe0372f9d0.png",
+  "https://newsroom.tiktok.com/tiktok-world-26-turning-discovery-into-business-growth-with-ai-powered-innovations-vertical-experiences-and-high-impact-brand-solutions?lang=en":
+    "https://p16-ttark.tiktokcdn-us.com/tos-useast5-i-1rzkm2vceq-tx/396956ed1ce7e983ba4b0791d4b91870.png~tplv-1rzkm2vceq-default:0:0:q75.image",
+  "https://newsroom.snap.com/say-it-in-a-snap-newfronts-2025":
+    "https://images.ctfassets.net/o1znirz7lzo4/3TpnLrqsJTEwPkpyKHehab/fe270d94c5ce11c54933a4b7bcaff0c4/J2314_NewFronts_Newsroom-Header_1920x1080_PNG_050525_V1.png",
+  "https://forbusiness.snapchat.com/blog/snapchat-2025-performance-advertising":
+    "https://images.ctfassets.net/inb32lme5009/2YON2K8mL3v9RO9q2lQMJX/766793abf9e78040ec7f5e4b7daf9685/snap-2025-ad-product-recap-og-image.jpg",
+  "https://newsroom.snap.com/launching-sponsored-snaps-and-promoted-places":
+    "https://images.ctfassets.net/o1znirz7lzo4/4a92Q9zj1GlW79RG0kZp5s/80cdcfcbe33019ab0e5fde09f8e393c8/Snap_Inc.-_16_9_yellow.jpg",
+  "https://about.fb.com/news/2025/07/centralized-campaigns-ai-support-businesses-whatsapp/":
+    "https://about.fb.com/wp-content/uploads/2025/07/WhatsApp_Conversations-2025_Header.jpg?w=1200",
+  "https://about.fb.com/news/2025/09/bringing-new-tools-to-help-businesses-boost-engagement-customer-support-and-discoverability/":
+    "https://about.fb.com/wp-content/uploads/2025/09/Arun-Srinivas_WABS-2025_1.jpg?w=1200",
 };
 
 const logos: Record<string, { src: string; page: string }> = {
@@ -83,7 +113,65 @@ export function logoFor(platform: string) {
   return logos[platform] ?? logos["Google Ads"];
 }
 
-export function mediaFor(platform: string, title: string, sourceUrl: string, sourceName: string): LaunchMedia {
+const topicPhotos = {
+  phone: {
+    src: "/photos/phone-hand.jpg",
+    credit: "Dennis Cortés",
+    sourceUrl: "https://unsplash.com/photos/Fsl321ca52w",
+    licence: PHOTO_LICENCE,
+  },
+  creator: {
+    src: "/photos/creator-phone.jpg",
+    credit: "NeONBRAND",
+    sourceUrl: "https://unsplash.com/photos/Pfa7Soh0euw",
+    licence: PHOTO_LICENCE,
+  },
+  tv: {
+    src: "/photos/living-room-tv.jpg",
+    credit: "Evan Prodromou",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:A_flat-screen_television.jpg",
+    licence: COMMONS_BY_SA,
+  },
+  grocery: {
+    src: "/photos/grocery-aisle.jpg",
+    credit: "Tessa Bury",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Grocery_Store_Aisle,_vermont.jpg",
+    licence: COMMONS_BY,
+  },
+  laptop: {
+    src: "/photos/laptop-desk.jpg",
+    credit: "Freddie Marriage",
+    sourceUrl: "https://unsplash.com/photos/vSchPA-YA_A",
+    licence: PHOTO_LICENCE,
+  },
+  shop: {
+    src: "/photos/supermarket-aisle.jpg",
+    credit: "Wilfredor",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Aisle_in_L_Intermarche_supermarket_in_Quebec_City.jpg",
+    licence: COMMONS_BY_SA,
+  },
+} as const;
+
+export function topicPhoto(kind: keyof typeof topicPhotos, alt: string): LaunchMedia {
+  const photo = topicPhotos[kind];
+  return { type: "image", alt, fit: "cover", ...photo };
+}
+
+function topicFor(platform: string, channel?: string): keyof typeof topicPhotos {
+  if (channel === "ctv-video" || platform === "YouTube") return "tv";
+  if (channel === "retail-media" || platform === "Amazon Ads") return "grocery";
+  if (channel === "search" || platform === "Microsoft Advertising" || platform === "Google Ads") return "laptop";
+  if (platform === "TikTok" || platform === "Snap") return "creator";
+  return "phone";
+}
+
+export function mediaFor(
+  platform: string,
+  title: string,
+  sourceUrl: string,
+  sourceName: string,
+  channel?: string,
+): LaunchMedia {
   const src = articleImages[sourceUrl];
   if (src) {
     return {
@@ -93,15 +181,8 @@ export function mediaFor(platform: string, title: string, sourceUrl: string, sou
       credit: sourceName,
       sourceUrl,
       licence: ARTICLE_TERMS,
+      fit: "contain",
     };
   }
-  const logo = logoFor(platform);
-  return {
-    type: "logo",
-    src: logo.src,
-    alt: `${platform} logo`,
-    credit: platform,
-    sourceUrl: logo.page,
-    licence: LOGO_TERMS,
-  };
+  return topicPhoto(topicFor(platform, channel), title);
 }

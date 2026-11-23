@@ -46,21 +46,26 @@ export default function MediaVisual({
     );
   }
 
+  const pad = tint[platform] ?? "#f4f4f4";
+
   if (logo) {
     return (
-      <div className={`flex flex-col items-center justify-center gap-3 px-6 ${className}`} style={{ background: tint[platform] ?? "#f4f4f4" }}>
+      <div className={`flex flex-col items-center justify-center gap-3 px-6 ${className}`} style={{ background: pad }}>
         <Image src={src} alt="" width={160} height={64} className="max-h-16 w-auto max-w-[70%] object-contain" unoptimized />
         <p className="text-center text-sm font-semibold">{platform}</p>
       </div>
     );
   }
 
+  const fit = media.fit === "cover" ? "object-cover" : "object-contain";
+
   return (
     <Image
       src={src}
       alt={media.alt}
       fill
-      className="object-cover"
+      className={fit}
+      style={{ background: pad }}
       sizes="(min-width: 1440px) 20vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
       unoptimized
       onError={() => setFailed(true)}
