@@ -1,255 +1,561 @@
-export type LaunchUpdate = {
+import { channelLabel, regionLabel, type FeedChannelId, type FeedRegionId } from "@/lib/taxonomy";
+
+export type LaunchImage = {
+  src: string;
+  alt: string;
+  credit: string;
+  licence: string;
+};
+
+export type Launch = {
+  id: string;
   slug: string;
   title: string;
-  summary: string;
   bullets: string[];
   platform: string;
   platformSlug?: string;
-  country: string;
-  countryNote: string;
-  channel: string;
-  channelSlug: string;
-  sourceUrl: string;
-  sourceName: string;
+  channel: FeedChannelId;
+  region: FeedRegionId;
+  regionNote?: string;
   date: string;
+  datePrecision?: "day" | "month";
+  sourceName: string;
+  sourceUrl: string;
+  image: LaunchImage;
   verified: true;
 };
 
-export const updates: LaunchUpdate[] = [
-  {
+function cover(slug: string, title: string): LaunchImage {
+  return {
+    src: `/covers/${slug}.svg`,
+    alt: `Original typographic cover for “${title}”`,
+    credit: "Dibs On Ads",
+    licence: "Original. Generated cover art, not a platform logo or a press photo.",
+  };
+}
+
+function launch(entry: Omit<Launch, "id" | "image" | "verified"> & { image?: LaunchImage }): Launch {
+  return {
+    ...entry,
+    id: entry.slug,
+    verified: true,
+    image: entry.image ?? cover(entry.slug, entry.title),
+  };
+}
+
+export const updates: Launch[] = [
+  launch({
     slug: "microsoft-bing-ai-overview-ads",
     title: "Microsoft Advertising places ads in Bing AI Overviews",
-    summary:
-      "Ads can now appear next to AI Overviews on Bing through campaigns advertisers already run, including Performance Max and AI Max. Microsoft says the placement is available in every market except China.",
     bullets: [
-      "No separate campaign type is required. Microsoft says Performance Max and AI Max are the most effective way to show up in these AI experiences.",
-      "Availability, as stated in the post: all markets except China.",
-      "The same November update also introduces Discover ads on Edge and Windows in the US, Canada, the UK, Australia, and India, and points to Xbox Video for Brands as full-screen video before a cloud-gaming session.",
+      "Ads can show beside Bing AI Overviews through campaigns you already run, including Performance Max and AI Max.",
+      "Microsoft says this placement is available in all markets except China.",
+      "No separate campaign type is required.",
     ],
     platform: "Microsoft Advertising",
     platformSlug: "microsoft-ads",
-    country: "Multiple",
-    countryNote: "AI Overview ads: all markets except China. Discover: US, Canada, UK, Australia, and India.",
-    channel: "Search & AI",
-    channelSlug: "search-ai",
+    channel: "search",
+    region: "global",
+    regionNote: "All markets except China.",
+    date: "2026-11-19",
+    sourceName: "Microsoft Advertising",
     sourceUrl:
       "https://about.ads.microsoft.com/en/blog/post/november-2026/put-ai-to-work-engaging-customers-in-more-places-whats-new-in-microsoft-advertising-this-november",
-    sourceName: "Microsoft Advertising blog, 19 Nov 2026",
-    date: "2026-11-19",
-    verified: true,
-  },
-  {
+  }),
+  launch({
     slug: "chatgpt-ads-expands-26-countries",
     title: "ChatGPT Ads expands to 26 more countries",
-    summary:
-      "OpenAI says ChatGPT Ads is now available in 89 countries after a 26-country expansion. Ads stay on the Free and Go plans. Plus, Pro, and Enterprise stay ad-free.",
     bullets: [
-      "OpenAI says more than 100,000 advertisers have run campaigns since ads launched about eight months earlier.",
-      "The new wave includes 14 more Latin American countries, among them Argentina, Chile, Colombia, and Peru, plus markets such as Nigeria, South Africa, Serbia, Ukraine, Cambodia, Bangladesh, and Pakistan.",
-      "Advertisers can buy through technology partners or self-serve Ads Manager. OpenAI says answers stay independent of ads and conversations are not sold to advertisers.",
+      "OpenAI says ChatGPT Ads now reaches 89 countries after this 26-country expansion.",
+      "Ads stay on Free and Go. Plus, Pro, and Enterprise stay ad-free.",
+      "Buying is through technology partners or self-serve Ads Manager.",
     ],
     platform: "ChatGPT Ads",
-    country: "Multiple",
-    countryNote: "OpenAI says availability now covers 89 countries. The post names examples, not the full list of 89.",
-    channel: "Search & AI",
-    channelSlug: "search-ai",
-    sourceUrl: "https://openai.com/index/chatgpt-ads-expands-26-new-countries",
-    sourceName: "OpenAI, 21 Oct 2026",
+    channel: "ai-ads",
+    region: "multiple",
+    regionNote: "OpenAI says 89 countries and names examples, not the full list.",
     date: "2026-10-21",
-    verified: true,
-  },
-  {
+    sourceName: "OpenAI",
+    sourceUrl: "https://openai.com/index/chatgpt-ads-expands-26-new-countries",
+  }),
+  launch({
+    slug: "dv360-vertical-video",
+    title: "DV360 introduces Vertical Video Unification",
+    bullets: [
+      "Display & Video 360 can buy and measure vertical video across publishers in one workflow.",
+      "Google says Gemini powers buying, execution, and full-funnel measurement in this setup.",
+      "The post does not name the countries included.",
+    ],
+    platform: "Display & Video 360",
+    channel: "programmatic",
+    region: "not-stated",
+    date: "2026-09-28",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/marketingplatform/360/vertical-video-unification/",
+  }),
+  launch({
     slug: "pinterest-visual-search-ads",
     title: "Pinterest announces Visual Search Ads",
-    summary:
-      "Visual Search Ads place a keyword-relevant unit in Pinterest search results and Pin closeups. Pinterest says the beta opens to eligible advertisers in all of its ad markets in the coming weeks.",
     bullets: [
-      "The format supports lower-funnel objectives and works with Pinterest Performance+.",
-      "Advertisers can bid for a top response and send people to the advertiser site.",
-      "The same summit post adds Priority Products and self-serve A/B testing inside Performance+, plus an App Promotion objective in global beta for qualified advertisers.",
-      "Pinterest does not list the individual ad markets in the announcement.",
+      "The unit sits in search results and Pin closeups, and advertisers can bid for a top response.",
+      "It supports lower-funnel objectives and works with Pinterest Performance+.",
+      "Beta for eligible advertisers in all Pinterest ad markets. The post does not name those markets.",
     ],
     platform: "Pinterest",
     platformSlug: "pinterest",
-    country: "Multiple",
-    countryNote: "Beta for eligible advertisers in all Pinterest ad markets. The post does not name those markets.",
-    channel: "Paid Social",
-    channelSlug: "paid-social",
-    sourceUrl: "https://newsroom.pinterest.com/news/new-pinterest-visual-search-performance-ads/",
-    sourceName: "Pinterest Newsroom, 17 Sep 2026",
+    channel: "social",
+    region: "multiple",
+    regionNote: "All Pinterest ad markets. The list is not in the announcement.",
     date: "2026-09-17",
-    verified: true,
-  },
-  {
-    slug: "google-conversational-discovery-ads",
-    title: "Google tests Conversational Discovery ads and Highlighted Answers",
-    summary:
-      "At Google Marketing Live 2026, Google said it is testing two Gemini-built ad formats inside AI Mode in Search. Both include an independent AI explainer and stay labeled Sponsored.",
+    sourceName: "Pinterest Newsroom",
+    sourceUrl: "https://newsroom.pinterest.com/news/new-pinterest-visual-search-performance-ads/",
+  }),
+  launch({
+    slug: "google-lsa-home-listings",
+    title: "Google rolls Local Services home-listing ads across the US",
     bullets: [
-      "Conversational Discovery ads tailor creative to a specific question someone asks in AI Mode.",
-      "Highlighted Answers can place a highly relevant ad inside an AI Mode recommendation list.",
-      "The same post describes AI-powered Shopping ads and Business Agent for Leads as coming to Search in the following months, and expands the Direct Offers pilot.",
-      "The announcement does not name the countries included in the AI Mode tests.",
+      "Richer Local Services Ads for home listings reach all 50 U.S. states after a limited pilot.",
+      "The ad can show price, images, and home features, via a HouseCanary data partnership.",
+      "Buyers can call, message, or book an agent from the ad. Existing LSA agents are included automatically.",
     ],
     platform: "Google Ads",
     platformSlug: "google-ads",
-    country: "Not stated",
-    countryNote: "Google’s post does not say which countries are in the AI Mode ad tests.",
-    channel: "Search & AI",
-    channelSlug: "search-ai",
-    sourceUrl: "https://blog.google/products/ads-commerce/google-marketing-live-search-ads/",
-    sourceName: "Google blog, 20 May 2026",
+    channel: "search",
+    region: "us",
+    date: "2026-06-11",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/ads-commerce/new-real-estate-ads-formats/",
+  }),
+  launch({
+    slug: "youtube-demand-gen-may-2026",
+    title: "YouTube adds Demand Gen creative, Maps, and checkout updates",
+    bullets: [
+      "Multimodal video creation in Asset Studio, plus a way to boost creator partnership videos inside Demand Gen setup.",
+      "New Google Maps inventory, and checkout links expanding to nine markets the post does not name.",
+      "Product feeds extend to more surfaces, including automotive.",
+    ],
+    platform: "YouTube",
+    channel: "ctv-video",
+    region: "not-stated",
+    regionNote: "Nine new checkout-link markets are mentioned and not listed.",
     date: "2026-05-20",
-    verified: true,
-  },
-  {
+    sourceName: "Google / YouTube",
+    sourceUrl: "https://blog.google/products-and-platforms/products/youtube/youtube-demand-gen-updates/",
+  }),
+  launch({
+    slug: "google-conversational-discovery-ads",
+    title: "Google tests Conversational Discovery ads and Highlighted Answers",
+    bullets: [
+      "Both formats are tests inside AI Mode and stay labeled Sponsored.",
+      "Each includes an explainer written by Gemini, separate from the advertiser’s creative.",
+      "The post does not say which countries are in the test.",
+    ],
+    platform: "Google Ads",
+    platformSlug: "google-ads",
+    channel: "ai-ads",
+    region: "not-stated",
+    date: "2026-05-20",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/ads-commerce/google-marketing-live-search-ads/",
+  }),
+  launch({
+    slug: "youtube-brandcast-2026",
+    title: "YouTube Brandcast adds sponsorships, CTV checkout, and a new masthead",
+    bullets: [
+      "Custom Sponsorships use AI to surface videos around a moment the brand chooses.",
+      "Masthead with Custom Content Shelf lets a brand curate extra videos next to the hero.",
+      "Buy with Google Pay lets a viewer check out on the TV in two clicks. Affiliate Partnerships Boost amplifies organic videos that already tag the product.",
+    ],
+    platform: "YouTube",
+    channel: "ctv-video",
+    region: "not-stated",
+    date: "2026-05-13",
+    sourceName: "Google / YouTube",
+    sourceUrl: "https://blog.google/products-and-platforms/products/youtube/youtube-brandcast-2026-advertiser-updates/",
+  }),
+  launch({
+    slug: "openai-ads-manager-cpc",
+    title: "OpenAI opens a beta Ads Manager and CPC bidding for ChatGPT",
+    bullets: [
+      "Advertisers can buy through partners or a beta self-serve Ads Manager.",
+      "CPC bidding sits alongside the earlier CPM option. You pay when someone clicks.",
+      "OpenAI says it has also launched a Conversions API and pixel measurement. Conversations are not shared.",
+    ],
+    platform: "ChatGPT Ads",
+    channel: "ai-ads",
+    region: "not-stated",
+    date: "2026-05-05",
+    sourceName: "OpenAI",
+    sourceUrl: "https://openai.com/index/new-ways-to-buy-chatgpt-ads/",
+  }),
+  launch({
+    slug: "google-ai-max-for-shopping",
+    title: "Google launches AI Max for Shopping campaigns",
+    bullets: [
+      "One-click upgrade for existing Shopping campaigns, using the Merchant Center feed.",
+      "Adds text customization, final URL expansion, and automatic choice between text and Shopping formats.",
+      "Final URL expansion can be turned off so delivery stays on Shopping ads.",
+    ],
+    platform: "Google Ads",
+    platformSlug: "google-ads",
+    channel: "search",
+    region: "not-stated",
+    date: "2026-04-30",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/ads-commerce/ai-max-for-shopping/",
+  }),
+  launch({
+    slug: "microsoft-ai-max-offer-highlights",
+    title: "Microsoft Advertising opens AI Max and Offer Highlights",
+    bullets: [
+      "AI Max for Search is an open pilot from May 2026: broader query matching, asset personalization, and URL routing.",
+      "Offer Highlights promote a product difference, such as free shipping, inside Copilot. Retail, English-speaking markets.",
+      "Audience generation, a prompt-to-audience tool, is a closed pilot in the US and Canada.",
+    ],
+    platform: "Microsoft Advertising",
+    platformSlug: "microsoft-ads",
+    channel: "search",
+    region: "multiple",
+    regionNote: "Offer Highlights: English-speaking markets. Audience generation: US and Canada.",
+    date: "2026-04-21",
+    sourceName: "Microsoft Advertising",
+    sourceUrl: "https://about.ads.microsoft.com/en/blog/post/april-2026/win-across-all-three-eras-of-the-web",
+  }),
+  launch({
     slug: "tiktok-newfronts-high-impact-formats",
     title: "TikTok launches Logo Takeover, Prime Time, and TopReach",
-    summary:
-      "At IAB NewFronts 2026, TikTok announced three high-impact buys: Logo Takeover on app open, Prime Time sequential ads, and TopReach, which packages TopView with TopFeed.",
     bullets: [
-      "Logo Takeover co-brands the moment someone opens TikTok, before other distractions.",
-      "Prime Time can show up to three sequential ads from one advertiser to the same person inside a 15-minute window.",
-      "TopReach combines TopView (the first view on open) and TopFeed (the first in-feed spot) into one buy aimed at one-day reach.",
-      "The post also extends TikTok Pulse with Pulse Mentions and Pulse Tastemakers. It highlights US audiences and does not publish a country-by-country list.",
+      "Logo Takeover brands the moment someone opens the app.",
+      "Prime Time can serve up to three sequential ads from one advertiser to the same person inside 15 minutes.",
+      "TopReach packages TopView and TopFeed as one buy aimed at a single day’s reach.",
     ],
     platform: "TikTok",
     platformSlug: "tiktok",
-    country: "US",
-    countryNote: "Framed for advertisers reaching audiences in the US. A wider country list is not in the post.",
-    channel: "Paid Social",
-    channelSlug: "paid-social",
-    sourceUrl: "https://newsroom.tiktok.com/newfronts-26-tiktok-unveils-new-high-impact-ad-solutions?lang=en",
-    sourceName: "TikTok Newsroom, 24 Mar 2026",
+    channel: "social",
+    region: "us",
+    regionNote: "US-framed NewFronts post. A wider country list is not included.",
     date: "2026-03-24",
-    verified: true,
-  },
-  {
+    sourceName: "TikTok Newsroom",
+    sourceUrl: "https://newsroom.tiktok.com/newfronts-26-tiktok-unveils-new-high-impact-ad-solutions?lang=en",
+  }),
+  launch({
+    slug: "youtube-vrc-non-skip",
+    title: "YouTube VRC non-skip ads reach general availability",
+    bullets: [
+      "Generally available globally in Google Ads and Display & Video 360.",
+      "Built for CTV. Google AI chooses among 6-second bumpers, 15-second ads, and 30-second CTV-only non-skips.",
+      "The point of the format is that the message plays through.",
+    ],
+    platform: "YouTube",
+    channel: "ctv-video",
+    region: "global",
+    date: "2026-03-02",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/ads-commerce/vrc-non-skip-ads-generally-available/",
+  }),
+  launch({
+    slug: "tiktok-europe-streaming-ads",
+    title: "TikTok brings Streaming Ads and New Title Launch to Europe",
+    bullets: [
+      "Two performance formats for entertainment advertisers, announced in Europe around the Berlinale.",
+      "Streaming Ads run on Smart+. Creative options include a four-title video carousel and a media card.",
+      "New Title Launch is aimed at premieres, subscriptions, and ticket sales.",
+    ],
+    platform: "TikTok",
+    platformSlug: "tiktok",
+    channel: "social",
+    region: "eu",
+    date: "2026-02-12",
+    sourceName: "TikTok Newsroom",
+    sourceUrl: "https://newsroom.tiktok.com/tiktok-feiert-die-liebe-zum-film-zur-berlinale-2026?lang=de-DE",
+  }),
+  launch({
     slug: "chatgpt-ads-us-test",
     title: "OpenAI starts testing ads in ChatGPT in the US",
-    summary:
-      "On 9 February 2026 OpenAI began testing ads in ChatGPT for logged-in adults on the Free and Go tiers in the United States. Paid Plus, Pro, Business, Enterprise, and Education plans do not include ads.",
     bullets: [
-      "Ads are labeled and separated from the answer. OpenAI says ads do not influence the answer.",
-      "Advertisers do not receive chats, chat history, memories, or personal details — only aggregate performance such as views or clicks.",
-      "During the test, ads are not shown on accounts OpenAI is told or predicts are under 18, and they are not eligible near sensitive topics such as health, mental health, or politics.",
-      "The same page later records expansions beyond the US, including a 11 August 2026 note that ads had launched in the UK, Mexico, Brazil, Japan, and South Korea.",
+      "Logged-in adults on Free and Go in the United States. Plus, Pro, Business, Enterprise, and Education do not get ads.",
+      "Ads are labeled, separated from the answer, and do not change the answer.",
+      "Advertisers receive aggregate results, not the chat. Ads are kept off accounts believed to be under 18.",
     ],
     platform: "ChatGPT Ads",
-    country: "US",
-    countryNote: "The 9 February 2026 test is the United States. Later updates on the same page add more countries.",
-    channel: "Search & AI",
-    channelSlug: "search-ai",
-    sourceUrl: "https://openai.com/index/testing-ads-in-chatgpt/",
-    sourceName: "OpenAI, 9 Feb 2026",
+    channel: "ai-ads",
+    region: "us",
     date: "2026-02-09",
-    verified: true,
-  },
-  {
+    sourceName: "OpenAI",
+    sourceUrl: "https://openai.com/index/testing-ads-in-chatgpt/",
+  }),
+  launch({
     slug: "meta-threads-ads-all-markets",
     title: "Meta expands Threads ads to users in all markets",
-    summary:
-      "Meta says ads on Threads, already offered to advertisers globally the previous spring, begin reaching users in all markets. Image, video, and carousel ads run in the Threads feed.",
     bullets: [
-      "Threads can be added as a placement on Advantage+ and manual campaigns.",
-      "Meta describes the formats as the familiar image, video, and carousel units, shown natively in the Threads feed.",
-      "The post says the expansion to users in every market begins the week after the 21 January 2026 announcement.",
+      "Image, video, and carousel ads run in the Threads feed.",
+      "Threads can be added as a placement on Advantage+ and on manual campaigns.",
+      "Meta said user delivery would begin the week after this announcement.",
     ],
     platform: "Meta",
     platformSlug: "meta",
-    country: "Global",
-    countryNote: "Meta says delivery expands to users in all markets globally.",
-    channel: "Paid Social",
-    channelSlug: "paid-social",
-    sourceUrl: "https://www.facebook.com/business/news/ads-on-threads-one-year-in",
-    sourceName: "Meta for Business, 21 Jan 2026",
+    channel: "social",
+    region: "global",
     date: "2026-01-21",
-    verified: true,
-  },
-  {
+    sourceName: "Meta for Business",
+    sourceUrl: "https://www.facebook.com/business/news/ads-on-threads-one-year-in",
+  }),
+  launch({
     slug: "reddit-max-campaigns-beta",
     title: "Reddit opens Max campaigns in beta",
-    summary:
-      "Reddit’s Max campaigns automate targeting, creative selection, placements, and budget allocation for traffic and conversion objectives. The beta launched to select advertisers, with wider access planned over the following months.",
     bullets: [
-      "Advertisers create a Max campaign by choosing Traffic or Conversions in Advanced Create.",
-      "Optional creative tools include headline suggestions and thumbnail generation for the conversation placement.",
-      "Top Audience Personas, a reporting view that clusters people the campaign reached, was scheduled for the following weeks.",
-      "The announcement does not name the countries included in the beta.",
+      "Max automates targeting, creative, placements, and budget for traffic and conversion objectives.",
+      "Create one by choosing Traffic or Conversions in Advanced Create.",
+      "The beta opened to select advertisers. The post does not name countries.",
     ],
     platform: "Reddit",
     platformSlug: "reddit",
-    country: "Not stated",
-    countryNote: "Beta for select advertisers. Reddit does not list countries in the announcement.",
-    channel: "Paid Social",
-    channelSlug: "paid-social",
+    channel: "social",
+    region: "not-stated",
+    date: "2026-01-05",
+    sourceName: "Reddit, Inc.",
     sourceUrl:
       "https://redditinc.com/news/now-in-beta-max-campaigns-for-ai-powered-ad-performance-and-unique-audience-insights",
-    sourceName: "Reddit, Inc., 5 Jan 2026",
-    date: "2026-01-05",
-    verified: true,
-  },
-  {
-    slug: "linkedin-first-impression-and-ctv",
-    title: "LinkedIn introduces First Impression Ads and opens CTV ads in the US and Canada",
-    summary:
-      "LinkedIn announced First Impression Ads, a full-screen vertical video reserved as the first ad a member sees that day, and said CTV ads are generally available for targeting buyers in the US and Canada.",
+  }),
+  launch({
+    slug: "amazon-sponsored-products-video",
+    title: "Amazon Ads launches Sponsored Products video in the US",
     bullets: [
-      "First Impression Ads are single-day campaigns built to reserve the first ad impression.",
-      "Reserved Ads can place Sponsored Content — Thought Leader Ads, Single Image Ads, and Document Ads — in the first ad slot of the feed.",
-      "CTV ads are generally available to target buyers in the US and Canada. The post does not give a country list for First Impression Ads or Reserved Ads.",
+      "Advertisers upload 1–5 feature videos per product, with a short description for each.",
+      "Shoppers can see up to three thumbnails picked from the query and browsing history.",
+      "Available in the United States, inside existing Sponsored Products campaigns.",
+    ],
+    platform: "Amazon Ads",
+    platformSlug: "amazon-ads",
+    channel: "retail-media",
+    region: "us",
+    regionNote: "Announced at unBoxed 2025. Dated 11 Nov 2025 by AdExchanger’s report from the show.",
+    date: "2025-11-11",
+    sourceName: "Amazon Ads",
+    sourceUrl: "https://advertising.amazon.com/resources/whats-new/unboxed-2025-sponsored-products-video",
+  }),
+  launch({
+    slug: "amazon-sponsored-brands-rsov",
+    title: "Amazon Ads launches Sponsored Brands reserve share of voice",
+    bullets: [
+      "Brands can reserve top-of-search on branded keywords at a fixed price, in self-serve.",
+      "Creative can be video, a logo, headlines, Brand Store links, or collections.",
+      "Amazon’s write-up of the early pilots is US data.",
+    ],
+    platform: "Amazon Ads",
+    platformSlug: "amazon-ads",
+    channel: "retail-media",
+    region: "us",
+    date: "2025-11-11",
+    sourceName: "Amazon Ads",
+    sourceUrl: "https://advertising.amazon.com/library/news/unboxed-2025-sponsored-brands-reserve-share-of-voice",
+  }),
+  launch({
+    slug: "amazon-ads-prompts",
+    title: "Amazon adds Sponsored Products and Brands prompts",
+    bullets: [
+      "Prompts on search results and product pages can open a Rufus dialog or answer on the page.",
+      "Existing Sponsored Products and Sponsored Brands campaigns in the US are enrolled. Authors and publishers are excluded.",
+      "Introduced as an open beta in November 2025. The page does not give a day.",
+    ],
+    platform: "Amazon Ads",
+    platformSlug: "amazon-ads",
+    channel: "retail-media",
+    region: "us",
+    date: "2025-11-01",
+    datePrecision: "month",
+    sourceName: "Amazon Ads",
+    sourceUrl: "https://advertising.amazon.com/resources/whats-new/unboxed-2025-sponsored-products-and-sponsored-brands-prompts",
+  }),
+  launch({
+    slug: "pinterest-top-of-search",
+    title: "Pinterest previews Top of Search ads",
+    bullets: [
+      "Beta across all monetised markets. Ads sit in the top ten search results and in Related Pins.",
+      "Catalogues can appear in a brand-exclusive unit.",
+      "The same summit post says local inventory ads are available in shopping markets.",
+    ],
+    platform: "Pinterest",
+    platformSlug: "pinterest",
+    channel: "social",
+    region: "multiple",
+    regionNote: "All monetised markets. Not listed by name.",
+    date: "2025-09-25",
+    sourceName: "Pinterest Newsroom",
+    sourceUrl: "https://newsroom.pinterest.com/en-au/news/pinterest-introduces-top-of-search-ads-and-new-advertising-tools/",
+  }),
+  launch({
+    slug: "pinterest-where-to-buy",
+    title: "Pinterest adds where-to-buy links for CPG ads",
+    bullets: [
+      "Image and video ads can show several in-stock retailers for one product.",
+      "Built with Pear Commerce, native in Ads Manager, and with MikMak for brands that already use it.",
+      "Coming to all US and Canada advertisers in the weeks after the announcement.",
+    ],
+    platform: "Pinterest",
+    platformSlug: "pinterest",
+    channel: "retail-media",
+    region: "north-america",
+    regionNote: "United States and Canada.",
+    date: "2025-09-10",
+    sourceName: "Pinterest Newsroom",
+    sourceUrl: "https://newsroom.pinterest.com/news/where-to-buy-links-turn-inspiration-into-action-for-cpg-brands-on-pinterest/",
+  }),
+  launch({
+    slug: "linkedin-first-impression-and-ctv",
+    title: "LinkedIn introduces First Impression Ads and opens CTV in the US and Canada",
+    bullets: [
+      "First Impression Ads are full-screen vertical video reserved as the first ad a member sees that day.",
+      "Reserved Ads can put Sponsored Content in the first slot of the feed.",
+      "CTV ads are generally available for targeting buyers in the US and Canada.",
     ],
     platform: "LinkedIn",
     platformSlug: "linkedin",
-    country: "US & Canada",
-    countryNote: "CTV general availability is stated for buyers in the US and Canada. Other formats in the post have no country list.",
-    channel: "Paid Social",
-    channelSlug: "paid-social",
-    sourceUrl: "https://news.linkedin.com/2025/lms-introduces-new-ad-formats-and-more-collaborations",
-    sourceName: "LinkedIn News, 3 Jun 2025",
+    channel: "social",
+    region: "north-america",
+    regionNote: "CTV: US and Canada. First Impression country list is not in the post.",
     date: "2025-06-03",
-    verified: true,
-  },
-  {
-    slug: "google-ai-max-for-search",
-    title: "Google introduces AI Max for Search campaigns",
-    summary:
-      "AI Max is a one-click suite for Search campaigns: broader query matching, text customization, and final URL expansion, with brand and location controls. Google said the beta would reach all advertisers globally starting later in May 2025.",
+    sourceName: "LinkedIn News",
+    sourceUrl: "https://news.linkedin.com/2025/lms-introduces-new-ad-formats-and-more-collaborations",
+  }),
+  launch({
+    slug: "tiktok-search-center",
+    title: "TikTok announces Search Center and Brand Consideration ads",
     bullets: [
-      "Search term matching expands beyond existing keywords using broad match and keywordless technology, learning from keywords, assets, and URLs.",
-      "Text customization (formerly automatically created assets) writes headlines and descriptions from the landing page, ads, and keywords. Final URL expansion sends people to a more relevant page.",
-      "Controls called out in the launch post include locations of interest, brand inclusions and exclusions, asset removals, and URL controls.",
-      "Google’s rollout note: global beta, starting later in the month of the 6 May 2025 announcement.",
+      "Search Center is an AI workspace in Ads Manager for keyword ideas, measurement, and creative.",
+      "Brand Consideration is a mid-funnel buy meant to move people from awareness to consideration.",
+      "The summit post does not publish a country list.",
+    ],
+    platform: "TikTok",
+    platformSlug: "tiktok",
+    channel: "search",
+    region: "not-stated",
+    date: "2025-06-03",
+    sourceName: "TikTok Newsroom",
+    sourceUrl: "https://newsroom.tiktok.com/tiktok-world-2025?lang=en",
+  }),
+  launch({
+    slug: "reddit-dynamic-product-ads",
+    title: "Reddit Dynamic Product Ads reach general availability",
+    bullets: [
+      "DPA matches catalog products to people using on-platform and off-platform shopping signals.",
+      "Available in Reddit Ads Manager. Catalogs can run to millions of products.",
+      "A Smartly integration for planning DPA was in beta at the same time.",
+    ],
+    platform: "Reddit",
+    platformSlug: "reddit",
+    channel: "social",
+    region: "not-stated",
+    date: "2025-05-22",
+    sourceName: "Reddit for Business",
+    sourceUrl: "https://www.business.reddit.com/blog/dynamic-product-ads-launch",
+  }),
+  launch({
+    slug: "google-marketing-live-2025-ai-ads",
+    title: "Google expands ads in AI Overviews and tests ads in AI Mode",
+    bullets: [
+      "Ads in AI Overviews were expanding, in English, in select countries, on desktop and mobile.",
+      "Ads in AI Mode were a test in English in the US.",
+      "Peak Points, a YouTube format, was available in English in the US, UK, Canada, and Australia.",
     ],
     platform: "Google Ads",
     platformSlug: "google-ads",
-    country: "Global",
-    countryNote: "Google said the beta would roll out to all advertisers globally starting later in May 2025.",
-    channel: "Search & AI",
-    channelSlug: "search-ai",
-    sourceUrl: "https://blog.google/products/ads-commerce/google-ai-max-for-search-campaigns/",
-    sourceName: "Google blog, 6 May 2025",
+    channel: "ai-ads",
+    region: "multiple",
+    regionNote: "AI Mode test: US. Peak Points: US, UK, Canada, Australia. AI Overviews: select countries.",
+    date: "2025-05-21",
+    sourceName: "Google Ads Help",
+    sourceUrl: "https://support.google.com/google-ads/answer/16290177?hl=en",
+  }),
+  launch({
+    slug: "meta-newfronts-reels-trending",
+    title: "Meta tests Reels trending ads and a single-partner ad header",
+    bullets: [
+      "Reels trending ads were a test that places an ad after popular creator Reels, including topical lineups.",
+      "Partnership ads can feature one partner in the header on Facebook and Instagram.",
+      "Meta also described Facebook Live partnership ads at the same NewFronts.",
+    ],
+    platform: "Meta",
+    platformSlug: "meta",
+    channel: "social",
+    region: "not-stated",
+    date: "2025-05-08",
+    sourceName: "Meta for Business",
+    sourceUrl: "https://www.facebook.com/business/news/meta-at-iab-newfronts-2025",
+  }),
+  launch({
+    slug: "google-ai-max-for-search",
+    title: "Google introduces AI Max for Search campaigns",
+    bullets: [
+      "A one-click suite on Search: broader query matching, text customization, and final URL expansion.",
+      "Controls include brand lists, locations of interest, asset removal, and URL controls.",
+      "Google said the beta would reach all advertisers globally later in May 2025.",
+    ],
+    platform: "Google Ads",
+    platformSlug: "google-ads",
+    channel: "search",
+    region: "global",
     date: "2025-05-06",
-    verified: true,
-  },
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/ads-commerce/google-ai-max-for-search-campaigns/",
+  }),
+  launch({
+    slug: "dv360-newfront-2025",
+    title: "DV360 adds live CTV inventory and a commerce media offer",
+    bullets: [
+      "Live CTV inventory, including NFL Sunday Ticket on YouTube, plus a one-click curated CTV auction.",
+      "New direct integrations called out include Tubi, Spotify, and Roblox video.",
+      "A commerce and retail-media solution in DV360 was announced, with YouTube access to follow later that summer.",
+    ],
+    platform: "Display & Video 360",
+    channel: "programmatic",
+    region: "not-stated",
+    regionNote: "The post cites US watch time and an expanded Netflix partnership in EMEA. It is not a single-country launch.",
+    date: "2025-05-05",
+    sourceName: "Google",
+    sourceUrl: "https://blog.google/products/marketingplatform/360/google-newfront-rethink-ctv-beyond-streaming-with-display-video-360/",
+  }),
 ];
+
+export type LaunchUpdate = Launch;
 
 export function getUpdate(slug: string) {
   return updates.find((update) => update.slug === slug);
 }
 
 export function updatesByDate() {
-  return [...updates].sort((a, b) => (a.date < b.date ? 1 : -1));
+  return [...updates].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.title.localeCompare(b.title)));
 }
 
-export function filterUpdates(channel?: string, country?: string) {
-  return updatesByDate().filter((update) => {
-    if (channel && update.channelSlug !== channel) return false;
-    if (country && update.country !== country) return false;
-    return true;
-  });
+export function launchDek(update: Launch) {
+  return update.bullets[0] ?? update.title;
 }
 
-export function updateCountries() {
-  return Array.from(new Set(updates.map((update) => update.country)));
+export function launchPlatforms() {
+  return Array.from(new Set(updates.map((update) => update.platform))).sort((a, b) => a.localeCompare(b));
+}
+
+export function launchYears() {
+  return Array.from(new Set(updates.map((update) => update.date.slice(0, 4)))).sort((a, b) => (a < b ? 1 : -1));
+}
+
+export function formatLaunchDate(update: Pick<Launch, "date" | "datePrecision">) {
+  const parsed = new Date(`${update.date}T00:00:00Z`);
+  if (update.datePrecision === "month") {
+    return new Intl.DateTimeFormat("en-GB", { month: "short", year: "numeric", timeZone: "UTC" }).format(parsed);
+  }
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(parsed);
+}
+
+export function channelName(id: string) {
+  return channelLabel(id);
+}
+
+export function regionName(id: string) {
+  return regionLabel(id);
 }

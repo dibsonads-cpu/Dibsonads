@@ -5,7 +5,7 @@ export const siteConfig = {
   shortName: "Dibs",
   tagline: "Verified paid media launches. First dibs on new formats.",
   description:
-    "Verified paid media launches, practical channel guides, and an ad platform directory. Official sources only — unknowns stay labeled unknown.",
+    "The launch desk for paid media. New ad products, formats, and policy changes across social, search, retail, programmatic, CTV, and AI — sourced, short, and first.",
   url: rawSiteUrl.replace(/\/$/, ""),
   contactEmail: "TODO",
   social: {
@@ -20,7 +20,7 @@ export const siteConfig = {
     subscribeUrl: "https://dibsonads.substack.com/subscribe",
     formAction: "https://dibsonads.substack.com/api/v1/free?nojs=true",
   },
-  rssPath: "/rss.xml",
+  rssPath: "/feed.xml",
 };
 
 export type Channel = {
