@@ -62,7 +62,9 @@ Use a real photograph that matches the subject.
 | Licensed photo | Unsplash or a Creative Commons photo, downloaded into `public/photos`, with the photographer's name, the licence, and the source page. It has to match the topic (shopping, a phone, a TV, a creator at work). |
 | Last resort | A plain platform logo on a brand-colour field. Do not draw fake people. |
 
-`fit: "cover"` is for a photo whose subject still reads in a square. `fit: "contain"` pads the rest with the platform colour.
+`fit: "cover"` is for a square image whose subject still reads when it fills the frame. `fit: "contain"` pads the rest so a wide source image is not cropped.
+
+Every launch and case study must use a different image. `npm test` fails if two items share a file, including the same photo with a different query string. Source-article images stay on the publisher’s URL. When a story has no unique source image, or the only option is a generic photo, use a 1080×1080 infographic from `npm run infographics` (`scripts/make-infographics.mjs` and `lib/infographic-copy.json`). Infographics are type and simple shapes. No people, and no platform logos.
 
 Also required on every launch: `slug`, `title`, `bullets` (2 to 4 sentences from the source), `platform`, `channel` (`social`, `programmatic`, `ai-ads`, `retail-media`, `search`, `ctv-video`), `region` (`global`, `us`, `uk`, `eu`, `apac`, `latam`, `mea`, `north-america`, `multiple`, `not-stated`), optional `countries` as ISO codes the source named, `date`, `sourceName`, and `sourceUrl`. Leave `verified` to `launch()`.
 

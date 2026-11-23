@@ -24,7 +24,10 @@ export default function SavedPage() {
     localStorage.setItem(SAVED, JSON.stringify(next));
   }
 
-  const items = (slugs ?? []).map((slug) => updates.find((item) => item.slug === slug)).filter((item) => item !== undefined);
+  const items = (slugs ?? [])
+    .map((slug) => updates.find((item) => item.slug === slug))
+    .filter((item) => item !== undefined)
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.headline.localeCompare(b.headline)));
 
   return (
     <main className="mx-auto max-w-xl px-4 py-6">

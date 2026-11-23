@@ -151,9 +151,6 @@ export default function SwipeDeck({ launches, platform }: { launches: Launch[]; 
                   <span className="rounded-full bg-paper px-2 py-1">{current.platform}</span>
                 </div>
                 <p className="font-display text-3xl font-bold leading-tight">{current.headline}</p>
-                <p className="text-sm font-semibold text-ink/60">
-                  <time dateTime={current.date}>{formatLaunchDate(current)}</time>
-                </p>
                 <p className="text-sm leading-5">Live in {marketsLine(current.markets)}</p>
                 <ul className="list-disc space-y-1 pl-5 text-base leading-6">
                   {current.bullets.slice(0, expanded ? current.bullets.length : 3).map((bullet) => (

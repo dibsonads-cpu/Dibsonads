@@ -17,6 +17,8 @@ type Search = {
   platform?: string;
   range?: string;
   region?: string;
+  month?: string;
+  year?: string;
   view?: string;
   item?: string;
 };
@@ -48,6 +50,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           platform: params.platform ?? "",
           range: params.range ?? "",
           region: params.region ?? "",
+          month: params.month ?? "",
+          year: params.year ?? "",
           view: params.view ?? "",
           item: params.item ?? "",
         }}

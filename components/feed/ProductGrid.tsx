@@ -8,7 +8,7 @@ import SwipeDeck from "@/components/feed/SwipeDeck";
 import ExplainerSections from "@/components/launch/ExplainerSections";
 import { marketsLine } from "@/lib/markets";
 import { channelLabel, feedChannels, feedRegions } from "@/lib/taxonomy";
-import { formatLaunchDate, launchPlatforms, type Launch } from "@/lib/updates";
+import { formatLaunchDate, launchPlatforms, launchYears, type Launch } from "@/lib/updates";
 
 const SAVED = "dibsonads-saved";
 
@@ -17,6 +17,8 @@ type Filters = {
   platform: string;
   range: string;
   region: string;
+  month: string;
+  year: string;
   view: string;
   item: string;
 };
@@ -66,6 +68,8 @@ export default function ProductGrid({
         if (filters.channel && item.channel !== filters.channel) return false;
         if (filters.platform && item.platform !== filters.platform) return false;
         if (filters.region && item.region !== filters.region) return false;
+        if (filters.year && item.date.slice(0, 4) !== filters.year) return false;
+        if (filters.month && item.date.slice(5, 7) !== filters.month) return false;
         if (!inRange(item.date, filters.range)) return false;
         return true;
       }),
@@ -82,6 +86,8 @@ export default function ProductGrid({
     if (next.platform) params.set("platform", next.platform);
     if (next.range) params.set("range", next.range);
     if (next.region) params.set("region", next.region);
+    if (next.month) params.set("month", next.month);
+    if (next.year) params.set("year", next.year);
     if (next.view === "swipe") params.set("view", "swipe");
     if (next.item) params.set("item", next.item);
     const query = params.toString();
@@ -134,6 +140,8 @@ export default function ProductGrid({
         <Select label="Platform" value={filters.platform} onChange={(platform) => write({ ...filters, platform, item: "" })} options={[["", "All platforms"], ...platforms.map((item) => [item, item] as [string, string])]} />
         <Select label="Time" value={filters.range} onChange={(range) => write({ ...filters, range, item: "" })} options={[["", "Any time"], ["10", "Last 10 days"], ["30", "Last 30 days"], ["year", "This year"]]} />
         <Select label="Region" value={filters.region} onChange={(region) => write({ ...filters, region, item: "" })} options={[["", "All regions"], ...feedRegions.map((item) => [item.id, item.label] as [string, string])]} />
+        <Select label="Month" value={filters.month} onChange={(month) => write({ ...filters, month, item: "" })} options={[["", "Any month"], ...Array.from({ length: 12 }, (_, index) => [String(index + 1).padStart(2, "0"), ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][index]] as [string, string])]} />
+        <Select label="Year" value={filters.year} onChange={(year) => write({ ...filters, year, item: "" })} options={[["", "Any year"], ...launchYears().map((item) => [item, item] as [string, string])]} />
       </div>
 
       {filters.view === "swipe" ? (
@@ -142,17 +150,16 @@ export default function ProductGrid({
         <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 min-[1440px]:grid-cols-5">
           {visible.map((item) => (
             <li key={item.slug} className="min-w-0">
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_28px_rgba(20,26,42,0.12)]">
                 <button type="button" onClick={() => write({ ...filters, item: item.slug })} className="flex h-full min-w-0 flex-col text-left">
-                  <div className="relative aspect-square overflow-hidden bg-[#f3f3f3]">
+                  <div className="relative aspect-square overflow-hidden bg-[#efeae2]">
                     <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
                   </div>
-                  <div className="flex flex-1 flex-col gap-1 border-t border-black/10 p-3">
-                    <h2 className="line-clamp-3 text-sm font-semibold leading-snug">{item.headline}</h2>
-                    <p className="text-xs font-semibold">{item.platform}</p>
-                    <p className="text-xs text-ink/60">{channelLabel(item.channel)}</p>
-                    <p className="line-clamp-3 text-xs leading-5 text-ink/70">Live in {marketsLine(item.markets)}</p>
-                    <p className="mt-auto pt-1 text-[11px] text-ink/45">{formatLaunchDate(item)}</p>
+                  <div className="border-t border-black/10 p-3">
+                    <h2 className="line-clamp-3 text-[15px] font-semibold leading-snug">{item.headline}</h2>
+                    <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-ink/50">
+                      {item.platform} · {channelLabel(item.channel)}
+                    </p>
                   </div>
                 </button>
                 <button

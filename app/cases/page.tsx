@@ -32,17 +32,17 @@ export default function CasesPage() {
         Real brand examples. Numbers appear only when the source published them.
       </p>
       <ul className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-        {caseStudies.map((item) => (
+        {[...caseStudies]
+          .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.brand.localeCompare(b.brand)))
+          .map((item) => (
           <li key={item.slug}>
-            <Link href={`/cases/${item.slug}`} className="flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
-              <div className="relative aspect-square bg-[#f3f3f3]">
+            <Link href={`/cases/${item.slug}`} className="flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_28px_rgba(20,26,42,0.12)]">
+              <div className="relative aspect-square bg-[#efeae2]">
                 <MediaVisual media={item.image} platform={item.platform} className="absolute inset-0" />
               </div>
-              <div className="flex flex-1 flex-col gap-1 border-t border-black/10 p-3">
-                <h2 className="text-sm font-semibold leading-snug">{item.brand}</h2>
-                <p className="line-clamp-3 text-sm leading-snug">{item.title}</p>
-                <p className="text-xs font-semibold">{item.platform}</p>
-                <p className="line-clamp-2 text-xs text-ink/60">{item.markets.join(" · ")}</p>
+              <div className="border-t border-black/10 p-3">
+                <h2 className="line-clamp-3 text-[15px] font-semibold leading-snug">{item.brand}</h2>
+                <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-ink/50">{item.platform}</p>
               </div>
             </Link>
           </li>
